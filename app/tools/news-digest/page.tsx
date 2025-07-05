@@ -22,7 +22,7 @@ export default function NewsDigestPage() {
               </Button>
             </Link>
             <h1 className="text-3xl font-bold tracking-tight mb-4 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">News Digest</h1>
-            <p className="text-muted-foreground">
+            <p className="text-slate-700 dark:text-slate-300">
               Stay informed with AI-curated news summaries tailored to your interests.
             </p>
           </div>

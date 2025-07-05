@@ -43,7 +43,7 @@ export default function DashboardPage() {
               Welcome to Everyday AI
             </h2>
             <div className="prose prose-lg dark:prose-invert max-w-none">
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                 Discover the power of artificial intelligence in your daily life. Our suite of intelligent tools is designed to enhance your productivity, 
                 streamline your workflow, and make complex tasks simple. From crafting perfect emails to planning dream vacations, 
                 let AI be your personal assistant for a smarter, more efficient tomorrow.
@@ -57,7 +57,7 @@ export default function DashboardPage() {
               <h3 className="text-2xl font-semibold tracking-tight mb-2 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
                 Intelligent Solutions Hub
               </h3>
-              <p className="text-muted-foreground">Explore our curated collection of AI-powered tools designed to transform your daily tasks</p>
+              <p className="text-slate-700 dark:text-slate-300">Explore our curated collection of AI-powered tools designed to transform your daily tasks</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {tools.map((tool) => (

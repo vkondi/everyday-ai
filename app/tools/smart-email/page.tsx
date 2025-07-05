@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -9,7 +9,7 @@ import { BackgroundPattern } from "@/components/background-pattern"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "../../../components/ui/textarea"
-import { ArrowLeft, Mail, Sparkles, Target, Shield, Zap, Loader2, Copy, Check } from "lucide-react"
+import { ArrowLeft, Mail, Sparkles, Target, Shield, Zap, Loader2, Copy, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 
 interface EmailAnalysis {
@@ -35,6 +35,28 @@ export default function SmartEmailPage() {
   const [copySuccess, setCopySuccess] = useState(false)
   const [copySubjectSuccess, setCopySubjectSuccess] = useState(false)
   const [copyEmailSuccess, setCopyEmailSuccess] = useState(false)
+  const [currentCardIndex, setCurrentCardIndex] = useState(0)
+
+  const featureCards = [
+    {
+      icon: Target,
+      badge: "Tone Analysis",
+      title: "Perfect Tone Detection",
+      description: "AI analyzes your email's tone and suggests improvements for better communication."
+    },
+    {
+      icon: Sparkles,
+      badge: "Clarity Check",
+      title: "Enhanced Readability",
+      description: "Improve sentence structure and eliminate ambiguity for crystal clear messaging."
+    },
+    {
+      icon: Shield,
+      badge: "Professional Polish",
+      title: "Professional Enhancement",
+      description: "Add professional polish with grammar corrections and industry-specific language."
+    }
+  ]
 
   const copyToClipboard = async (text: string, setSuccessState: (value: boolean) => void) => {
     try {
@@ -75,6 +97,14 @@ export default function SmartEmailPage() {
     }
   }
 
+  const nextCard = () => {
+    setCurrentCardIndex((prev) => (prev + 1) % featureCards.length)
+  }
+
+  const prevCard = () => {
+    setCurrentCardIndex((prev) => (prev - 1 + featureCards.length) % featureCards.length)
+  }
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <BackgroundPattern />
@@ -93,90 +123,103 @@ export default function SmartEmailPage() {
             <h1 className="text-3xl font-bold tracking-tight mb-4 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
               Smart Email
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-slate-700 dark:text-slate-300 text-lg">
               Transform your emails with AI-powered suggestions for tone, clarity, and professionalism.
             </p>
           </div>
 
-          {/* Privacy Note */}
-          <Card className="mb-8 border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/10">
-            <CardContent className="pt-6">
-              <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Shield className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+          {/* Feature Cards - Grid on large screens, Carousel on mobile */}
+          <div className="mb-12">
+            {/* Desktop/Tablet Grid View */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {featureCards.map((card, index) => (
+                <Card key={index} className="border-amber-200 dark:border-amber-800">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                        {(() => {
+                          const IconComponent = card.icon;
+                          return <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
+                        })()}
+                      </div>
+                      <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
+                        {card.badge}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-lg">{card.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-sm">
+                      {card.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Mobile Carousel View */}
+            <div className="md:hidden">
+              <div className="relative">
+                <div className="flex justify-center">
+                  <Card className="border-amber-200 dark:border-amber-800 max-w-md w-full">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
+                          {(() => {
+                            const IconComponent = featureCards[currentCardIndex].icon;
+                            return <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
+                          })()}
+                        </div>
+                        <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
+                          {featureCards[currentCardIndex].badge}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-lg">{featureCards[currentCardIndex].title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-sm">
+                        {featureCards[currentCardIndex].description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
                 </div>
-                <div>
-                  <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1">Privacy & Security</h4>
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
-                    Your email content is processed securely by AI and is not stored on our servers. 
-                    We do not retain any of your data - it&apos;s used solely for real-time processing and enhancement.
-                  </p>
+                
+                {/* Carousel Navigation */}
+                <div className="flex justify-center items-center mt-4 space-x-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={prevCard}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  
+                  <div className="flex space-x-2">
+                    {featureCards.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentCardIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          index === currentCardIndex
+                            ? 'bg-amber-600 dark:bg-amber-400'
+                            : 'bg-gray-300 dark:bg-gray-600'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={nextCard}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="border-amber-200 dark:border-amber-800">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                    <Target className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
-                    Tone Analysis
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">Perfect Tone Detection</CardTitle>
-              </CardHeader>
-              <CardContent>
-                                   <CardDescription className="text-sm leading-relaxed">
-                     AI analyzes your email&apos;s tone and suggests improvements for better communication. 
-                     Whether formal, friendly, or persuasive, get the perfect tone for your audience.
-                   </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-amber-200 dark:border-amber-800">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                    <Sparkles className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
-                    Clarity Check
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">Enhanced Readability</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-sm leading-relaxed">
-                  Improve sentence structure, eliminate ambiguity, and enhance overall clarity. 
-                  Make your message crystal clear and easy to understand for any reader.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-amber-200 dark:border-amber-800">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                    <Shield className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
-                    Professional Polish
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">Professional Enhancement</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-sm leading-relaxed">
-                  Add professional polish with grammar corrections, formatting improvements, 
-                  and industry-specific language suggestions for maximum impact.
-                </CardDescription>
-              </CardContent>
-            </Card>
+            </div>
           </div>
 
           {/* Email Input Section */}
@@ -191,12 +234,12 @@ export default function SmartEmailPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-                             <Textarea
-                 placeholder="Paste your email content here...&#10;&#10;Example:&#10;Hi John,&#10;&#10;I wanted to follow up on our meeting yesterday. I think we should discuss the project timeline and budget considerations. Let me know when you&apos;re available for a call.&#10;&#10;Thanks,&#10;Sarah"
-                 value={emailContent}
-                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEmailContent(e.target.value)}
-                 className="min-h-[200px] resize-none border-amber-200 dark:border-amber-800 focus:border-amber-500 dark:focus:border-amber-400"
-               />
+              <Textarea
+                placeholder="Paste your email content here...&#10;&#10;Example:&#10;Hi John,&#10;&#10;I wanted to follow up on our meeting yesterday. I think we should discuss the project timeline and budget considerations. Let me know when you&apos;re available for a call.&#10;&#10;Thanks,&#10;Sarah"
+                value={emailContent}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEmailContent(e.target.value)}
+                className="min-h-[200px] resize-none border-amber-200 dark:border-amber-800 focus:border-amber-500 dark:focus:border-amber-400"
+              />
               <div className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">
                   {emailContent.length} characters
@@ -377,6 +420,23 @@ export default function SmartEmailPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Privacy Note - Moved to bottom */}
+          <Card className="mt-8 border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/10">
+            <CardContent className="pt-6">
+              <div className="flex items-start space-x-3">
+                <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Shield className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1">Privacy & Security</h4>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    Your email content is processed securely and not stored on our servers.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
 
