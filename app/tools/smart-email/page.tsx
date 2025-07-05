@@ -109,7 +109,7 @@ export default function SmartEmailPage() {
                   <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1">Privacy & Security</h4>
                   <p className="text-sm text-blue-700 dark:text-blue-300">
                     Your email content is processed securely by AI and is not stored on our servers. 
-                    We do not retain any of your data - it's used solely for real-time processing and enhancement.
+                    We do not retain any of your data - it&apos;s used solely for real-time processing and enhancement.
                   </p>
                 </div>
               </div>
@@ -131,10 +131,10 @@ export default function SmartEmailPage() {
                 <CardTitle className="text-lg">Perfect Tone Detection</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm leading-relaxed">
-                  AI analyzes your email's tone and suggests improvements for better communication. 
-                  Whether formal, friendly, or persuasive, get the perfect tone for your audience.
-                </CardDescription>
+                                   <CardDescription className="text-sm leading-relaxed">
+                     AI analyzes your email&apos;s tone and suggests improvements for better communication. 
+                     Whether formal, friendly, or persuasive, get the perfect tone for your audience.
+                   </CardDescription>
               </CardContent>
             </Card>
 
@@ -192,7 +192,7 @@ export default function SmartEmailPage() {
             </CardHeader>
             <CardContent className="space-y-4">
                              <Textarea
-                 placeholder="Paste your email content here...&#10;&#10;Example:&#10;Hi John,&#10;&#10;I wanted to follow up on our meeting yesterday. I think we should discuss the project timeline and budget considerations. Let me know when you're available for a call.&#10;&#10;Thanks,&#10;Sarah"
+                 placeholder="Paste your email content here...&#10;&#10;Example:&#10;Hi John,&#10;&#10;I wanted to follow up on our meeting yesterday. I think we should discuss the project timeline and budget considerations. Let me know when you&apos;re available for a call.&#10;&#10;Thanks,&#10;Sarah"
                  value={emailContent}
                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEmailContent(e.target.value)}
                  className="min-h-[200px] resize-none border-amber-200 dark:border-amber-800 focus:border-amber-500 dark:focus:border-amber-400"
