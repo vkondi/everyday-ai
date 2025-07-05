@@ -1,7 +1,6 @@
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
-import { Mail, MapPin, Newspaper } from "lucide-react"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
 
 interface DashboardCardProps {
   title: string
