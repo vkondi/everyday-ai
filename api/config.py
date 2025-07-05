@@ -7,14 +7,29 @@ from openai import OpenAI
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('api.log'),
-        logging.StreamHandler()
-    ]
-)
+# In production (Vercel), only use StreamHandler due to read-only filesystem
+# In development, use both FileHandler and StreamHandler
+is_production = os.getenv('VERCEL') == '1' or os.getenv('ENVIRONMENT') == 'production'
+
+if is_production:
+    # Production: only console logging (Vercel captures this)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler()
+        ]
+    )
+else:
+    # Development: both file and console logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('api.log'),
+            logging.StreamHandler()
+        ]
+    )
 logger = logging.getLogger(__name__)
 
 # Access environment variables
