@@ -1,13 +1,7 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+# Main entry point for the API
+# This file maintains backward compatibility while using the new modular structure
 
-app = Flask(__name__)
-CORS(app, expose_headers=['Content-Disposition'])
-
-@app.route('/api/test', methods=['GET'])
-def test():
-    return jsonify({'message': 'Hello, World!'})
-
+from app import app
 
 if __name__ == '__main__':
     app.run(debug=True)
