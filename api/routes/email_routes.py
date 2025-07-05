@@ -11,6 +11,7 @@ email_bp = Blueprint('email', __name__)
 # Initialize services
 deepseek_service = DeepSeekService()
 
+@email_bp.route('', methods=['POST'])
 @email_bp.route('/', methods=['POST'])
 def enhance_email_root():
     """
