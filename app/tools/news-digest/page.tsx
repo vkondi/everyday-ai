@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { BackgroundPattern } from "@/components/background-pattern"
 import { ArrowLeft, Newspaper } from "lucide-react"
 import Link from "next/link"
 
 export default function NewsDigestPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      <BackgroundPattern />
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-8 md:px-6">
+      <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Link href="/dashboard">
@@ -51,6 +54,7 @@ export default function NewsDigestPage() {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 } 

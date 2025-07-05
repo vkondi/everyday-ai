@@ -1,6 +1,8 @@
 import { DashboardCard } from "@/components/dashboard-card"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import { BackgroundPattern } from "@/components/background-pattern"
 import { Mail, MapPin, Newspaper } from "lucide-react"
 
 export default function DashboardPage() {
@@ -29,10 +31,11 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      <BackgroundPattern />
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-8 md:px-6">
+      <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Introduction Section */}
           <section className="mb-12">
@@ -73,6 +76,7 @@ export default function DashboardPage() {
       </main>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 } 
