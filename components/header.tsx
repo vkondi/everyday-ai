@@ -2,7 +2,6 @@
 
 import { ThemeToggle } from "./theme-toggle"
 import { ModelSelector } from "./model-selector"
-import { ModelStatus } from "./model-status"
 import { useModel } from "./model-context"
 
 export function Header() {
@@ -17,7 +16,6 @@ export function Header() {
           </h1>
         </div>
         <div className="flex items-center space-x-4">
-          <ModelStatus />
           <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
           <ThemeToggle />
         </div>
