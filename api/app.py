@@ -4,12 +4,17 @@ from config import logger
 from routes.email_routes import email_bp
 from routes.health_routes import health_bp
 from routes.news_routes import news_bp
+from routes.travel_routes import travel_bp
 
 def create_app():
     """
     Application factory pattern for creating Flask app
     """
     app = Flask(__name__)
+    
+    # Configure Flask for better performance with large responses
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max request size
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     
     # Configure CORS
     CORS(app, expose_headers=['Content-Disposition'])
@@ -18,6 +23,7 @@ def create_app():
     app.register_blueprint(health_bp, url_prefix='/api')
     app.register_blueprint(email_bp, url_prefix='/api/email')
     app.register_blueprint(news_bp, url_prefix='/api/news')
+    app.register_blueprint(travel_bp, url_prefix='/api/travel')
     
     # Log registered routes
     logger.info("Registered API routes:")
@@ -31,4 +37,4 @@ app = create_app()
 
 if __name__ == '__main__':
     logger.info("Starting Flask API server...")
-    app.run(debug=True) 
+    app.run(debug=True, threaded=True, host='0.0.0.0', port=5328) 

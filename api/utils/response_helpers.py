@@ -8,7 +8,10 @@ def success_response(data: Dict[str, Any], status_code: int = 200) -> tuple:
     """
     Create a standardized success response
     """
-    return jsonify(data), status_code
+    response = jsonify(data)
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
+    return response, status_code
 
 def error_response(message: str, status_code: int = 400, details: Optional[Dict[str, Any]] = None) -> tuple:
     """
@@ -46,6 +49,12 @@ def validate_required_field(data: Dict, field_name: str, field_type: type = str)
     if field_type == str:
         if not field_value or not isinstance(field_value, str):
             return None, error_response(f'{field_name} must be a non-empty string', 400)
+    elif field_type == int:
+        if not isinstance(field_value, int) or field_value <= 0:
+            return None, error_response(f'{field_name} must be a positive integer', 400)
+    elif field_type == list:
+        if not isinstance(field_value, list) or len(field_value) == 0:
+            return None, error_response(f'{field_name} must be a non-empty list', 400)
     elif not isinstance(field_value, field_type):
         return None, error_response(f'{field_name} must be of type {field_type.__name__}', 400)
     

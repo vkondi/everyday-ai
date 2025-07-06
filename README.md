@@ -58,10 +58,31 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 
 ## 🛠️ How It Works
 
-1. **Choose Your Tool**: Select from our suite of AI-powered assistants
-2. **Input Your Content**: Provide the information you want to enhance or analyze
-3. **Get AI Insights**: Receive intelligent suggestions and improvements
-4. **Apply & Improve**: Use the recommendations to create better results
+1. **Choose Your AI Model**: Select between DeepSeek API (cloud) or local models (DeepSeek R1, Llama 3) in development
+2. **Choose Your Tool**: Select from our suite of AI-powered assistants
+3. **Input Your Content**: Provide the information you want to enhance or analyze
+4. **Get AI Insights**: Receive intelligent suggestions and improvements
+5. **Apply & Improve**: Use the recommendations to create better results
+
+## 🤖 AI Model Options
+
+### DeepSeek API (Default)
+- **Cloud-based**: No local setup required
+- **Fast**: Instant response times
+- **Reliable**: Always available
+- **Requires**: DeepSeek API key
+- **Environment**: Available in all environments
+
+### Local Models (Development Only)
+- **Local DeepSeek R1**: Privacy-focused local processing with DeepSeek R1 model
+- **Local Llama 3**: Fast local processing with Llama 3 model
+- **Privacy-focused**: All processing happens locally
+- **Offline**: Works without internet connection
+- **Customizable**: Full control over the models
+- **Requires**: Ollama installation and model downloads
+- **Setup**: See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for installation guide
+- **Availability**: Only visible and functional in development environment
+- **Security**: Local models are completely disabled in production for security
 
 ## 🛠️ Tech Stack
 
@@ -73,8 +94,9 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 - **Framer Motion**: Smooth animations and transitions
 
 ### Backend & AI
-- **Python FastAPI**: High-performance API framework
+- **Python Flask**: High-performance API framework
 - **DeepSeek AI**: Advanced language model for intelligent text processing
+- **Ollama Integration**: Local AI processing with DeepSeek R1 model
 - **News API**: Real-time news data integration
 - **RESTful APIs**: Clean, scalable API architecture
 
