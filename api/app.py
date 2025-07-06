@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from config import logger
+from config import logger, is_production
 from routes.email_routes import email_bp
 from routes.health_routes import health_bp
 from routes.news_routes import news_bp
@@ -37,4 +37,7 @@ app = create_app()
 
 if __name__ == '__main__':
     logger.info("Starting Flask API server...")
-    app.run(debug=True, threaded=True, host='0.0.0.0', port=5328) 
+    # Debug mode is True in development, False in production
+    debug_mode = not is_production
+    logger.info(f"Debug mode: {debug_mode}")
+    app.run(debug=debug_mode, threaded=True, host='0.0.0.0', port=5328) 

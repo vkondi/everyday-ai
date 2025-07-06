@@ -30,7 +30,15 @@ else:
             logging.StreamHandler()
         ]
     )
+
+# Create logger instance
 logger = logging.getLogger(__name__)
+
+# Log the environment for debugging
+if is_production:
+    logger.info("Running in PRODUCTION mode")
+else:
+    logger.info("Running in DEVELOPMENT mode")
 
 # Access environment variables
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
