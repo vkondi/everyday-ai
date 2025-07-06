@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge"
 import { 
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu"
@@ -167,14 +166,14 @@ export default function NewsDigestPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [selectedModel])
 
   // Fetch news on initial load when categories and region are available
   useEffect(() => {
     if (selectedCategories.length > 0 && userRegion && newsArticles.length === 0) {
       fetchNews(selectedCategories, userRegion)
     }
-  }, [userRegion, newsArticles.length, fetchNews])
+  }, [userRegion, newsArticles.length, fetchNews, selectedCategories])
 
   // Manual refetch function
   const handleManualRefetch = () => {
@@ -236,7 +235,7 @@ export default function NewsDigestPage() {
                 Select News Categories
               </CardTitle>
               <CardDescription>
-                Choose the categories you're interested in. Click "Refresh News" to fetch news with your selected categories.
+                Choose the categories you&apos;re interested in. Click &quot;Refresh News&quot; to fetch news with your selected categories.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -370,7 +369,7 @@ export default function NewsDigestPage() {
               <CardContent className="pt-6 text-center">
                 <Newspaper className="h-12 w-12 mx-auto mb-4 text-amber-600 dark:text-amber-400 opacity-50" />
                 <p className="text-muted-foreground">
-                  No news articles available. Please select at least one category and click "Refresh News".
+                  No news articles available. Please select at least one category and click &quot;Refresh News&quot;.
                 </p>
               </CardContent>
             </Card>
