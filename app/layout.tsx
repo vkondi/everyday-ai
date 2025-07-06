@@ -24,6 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token = process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN;
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -35,10 +36,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ModelProvider>
-            {children}
-          </ModelProvider>
+          <ModelProvider>{children}</ModelProvider>
         </ThemeProvider>
+
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": ${token}}`}
+        ></script>
       </body>
     </html>
   );
