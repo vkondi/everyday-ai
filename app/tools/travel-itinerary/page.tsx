@@ -8,7 +8,7 @@ import { ScrollToTop } from "@/components/scroll-to-top"
 import { BackgroundPattern } from "@/components/background-pattern"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Plane, Calendar, Users, DollarSign, Loader2, ChevronLeft, ChevronRight, Shield, Trash2 } from "lucide-react"
+import { ArrowLeft, MapPin, Plane, Calendar, DollarSign, Loader2, ChevronLeft, ChevronRight, Shield, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useModel } from "@/components/model-context"
 
@@ -535,7 +535,7 @@ export default function TravelItineraryPage() {
                     <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600"></div>
                     
                     <div className="space-y-8">
-                      {results.daily_itinerary.map((day, dayIndex) => (
+                      {results.daily_itinerary.map((day) => (
                         <div key={day.day} className="relative">
                           {/* Timeline dot */}
                           <div className="absolute left-4 top-6 w-4 h-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>

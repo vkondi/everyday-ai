@@ -42,6 +42,7 @@ export function ModelStatus() {
           setError('Failed to check model status')
         }
       } catch (err) {
+        console.error('Error checking model status:', err)
         setError('Network error checking model status')
       } finally {
         setLoading(false)
@@ -71,7 +72,7 @@ export function ModelStatus() {
 
   if (!modelStatus) return null
 
-  const { models, ollama_service, environment } = modelStatus
+  const { models, ollama_service } = modelStatus
 
   return (
     <div className="flex items-center space-x-2">
