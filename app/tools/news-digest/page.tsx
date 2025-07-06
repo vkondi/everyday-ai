@@ -34,7 +34,7 @@ import {
   Zap
 } from "lucide-react"
 import { useModel } from "@/components/model-context"
-import { getUserFriendlyError, handleApiError, validateJsonResponse } from "../../../lib/error-utils"
+import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/lib/error-utils"
 
 interface NewsArticle {
   title: string;
