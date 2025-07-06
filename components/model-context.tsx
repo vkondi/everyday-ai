@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, ReactNode } from "react"
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react"
 import { AIModel } from "./model-selector"
 
 interface ModelContextType {
@@ -16,9 +16,29 @@ export function ModelProvider({ children }: { children: ReactNode }) {
   const defaultModel: AIModel = isDevelopment ? "deepseek-api" : "deepseek-api"
   
   const [selectedModel, setSelectedModel] = useState<AIModel>(defaultModel)
+  const [mounted, setMounted] = useState(false)
+
+  // Load model from localStorage on mount
+  useEffect(() => {
+    setMounted(true)
+    const storedModel = localStorage?.getItem('everyday-ai-model') as AIModel
+    if (storedModel && ['deepseek-api', 'local-deepseek-r1', 'local-llama3'].includes(storedModel)) {
+      setSelectedModel(storedModel)
+    }
+  }, [])
+
+  const value = {
+    selectedModel,
+    setSelectedModel: (model: AIModel) => {
+      if (mounted) {
+        localStorage?.setItem('everyday-ai-model', model)
+      }
+      setSelectedModel(model)
+    },
+  }
 
   return (
-    <ModelContext.Provider value={{ selectedModel, setSelectedModel }}>
+    <ModelContext.Provider value={value}>
       {children}
     </ModelContext.Provider>
   )

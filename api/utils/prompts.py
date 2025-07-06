@@ -92,6 +92,47 @@ Return ONLY valid JSON with no additional text or explanations:
 Important: Ensure the JSON is valid and complete. Include realistic activities, costs, and tips for {destination}. The total cost should be realistic for the budget of ${budget}.
 """
 
+# News Fetching Prompts
+NEWS_FETCH_PROMPT = """
+Generate 5 realistic news articles for the specified categories and country.
+
+Categories: {categories}
+Country: {region}
+
+Return ONLY valid JSON:
+
+{{
+    "articles": [
+        {{
+            "title": "Concise, engaging headline (max 80 characters)",
+            "description": "Clear 2-3 sentence summary with key details",
+            "category": "Exact category from the list",
+            "source": "Realistic news source (e.g., Reuters, BBC, CNN, local papers)"
+        }}
+    ]
+}}
+
+CRITICAL REQUIREMENTS:
+• Generate 5 articles total
+• Focus on NATIONAL/COUNTRY-LEVEL news for {region}
+• DO NOT create city-specific or local news
+• Include national politics, economy, sports, technology, and international news
+• Use country-wide events, not local events
+• Examples of good topics: national elections, federal policies, country-wide economic trends, national sports teams, international relations
+• Examples of BAD topics: local city events, neighborhood news, city-specific businesses
+
+Guidelines:
+• Distribute evenly across selected categories: {categories}
+• Prioritize country-level relevance for {region}
+• Include both domestic and international news with {region} perspective
+• Use current events and realistic scenarios
+• Keep titles concise and engaging
+• Ensure descriptions are informative but brief
+• Use credible news sources appropriate for the country
+
+Respond with JSON only.
+"""
+
 # System Messages for Different Models
 SYSTEM_MESSAGES = {
     "deepseek-api": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested.",

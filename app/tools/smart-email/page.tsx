@@ -12,6 +12,7 @@ import { Textarea } from "../../../components/ui/textarea"
 import { ArrowLeft, Mail, Sparkles, Target, Shield, Zap, Loader2, Copy, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { useModel } from "@/components/model-context"
+import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/lib/error-utils"
 
 interface EmailAnalysis {
   tone: string;
@@ -70,6 +71,8 @@ export default function SmartEmailPage() {
     }
   }
 
+
+
   const handleRefineEmail = async () => {
     if (!emailContent.trim()) return
     
@@ -88,15 +91,18 @@ export default function SmartEmailPage() {
       })
       
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to enhance email')
+        const errorMessage = await handleApiError(response, 'Failed to enhance email')
+        throw new Error(errorMessage)
       }
+      
+      validateJsonResponse(response)
       
       const data = await response.json()
       setResults(data)
     } catch (error) {
       console.error('Error refining email:', error)
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
+      setError(getUserFriendlyError(errorMessage, 'email'))
     } finally {
       setIsProcessing(false)
     }

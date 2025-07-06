@@ -1,9 +1,9 @@
 import json
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from config import logger
 import time
-from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, SYSTEM_MESSAGES, MODEL_CONFIGS
+from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT, SYSTEM_MESSAGES, MODEL_CONFIGS
 from utils.response_utils import (
     safe_json_parse, 
     validate_response_structure, 
@@ -65,6 +65,9 @@ class DeepSeekService:
                         "content": prompt
                     }
                 ],
+                response_format={
+                    'type': 'json_object'
+                },
                 temperature=config["temperature"],
                 max_tokens=config["max_tokens"],
                 timeout=config["timeout"]
@@ -150,6 +153,9 @@ class DeepSeekService:
                         "content": prompt
                     }
                 ],
+                response_format={
+                    'type': 'json_object'
+                },
                 temperature=config["temperature"],
                 max_tokens=config["max_tokens"],
                 timeout=config["timeout"]
@@ -173,6 +179,86 @@ class DeepSeekService:
                 return None, validation_error
             
             return itinerary_data, None
+            
+        except Exception as e:
+            return None, format_error_message(e, self.model_id, request_id)
+    
+    def fetch_news_by_category(self, categories: List[str], region: str, request_id: str) -> tuple[Optional[List[Dict[str, Any]]], Optional[str]]:
+        """
+        Fetch news articles by category and region using DeepSeek AI
+        
+        Args:
+            categories: List of news categories to fetch
+            region: User's region/country for localized news
+            request_id: Unique identifier for logging
+            
+        Returns:
+            (news_articles, error_message) - if error_message is not None, the request failed
+        """
+        if not self.is_available():
+            logger.error(f"[{request_id}] API key not configured. Cannot fetch news.")
+            return None, "API key not configured. Please set DEEPSEEK_API_KEY environment variable."
+        
+        # Use common prompt from prompts module
+        categories_text = ", ".join(categories)
+        prompt = NEWS_FETCH_PROMPT.format(categories=categories_text, region=region)
+        
+        try:
+            log_request_start(request_id, self.model_id, "news fetching")
+            
+            # Get model configuration
+            config = MODEL_CONFIGS[self.model_id]
+            
+            # Call DeepSeek AI
+            response = self.client.chat.completions.create(
+                model=config["model"],
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an expert news aggregator. You generate realistic news articles based on specified categories and regions. Always respond in the exact JSON format requested."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                response_format={
+                    'type': 'json_object'
+                },
+                temperature=config["temperature"],
+                max_tokens=3000,  # Higher token limit for news articles
+                timeout=config["timeout"]
+            )
+            
+            # Extract AI response
+            ai_response = response.choices[0].message.content.strip()
+            log_request_success(request_id, self.model_id, len(ai_response), "news fetching")
+            
+            # Parse and validate response using common utilities
+            news_data, error = safe_json_parse(ai_response, request_id, self.model_id)
+            if error:
+                return None, error
+            
+            # Validate the response structure
+            if 'articles' not in news_data:
+                logger.error(f"[{request_id}] Invalid AI response: missing 'articles' field")
+                return None, 'Invalid AI response: missing "articles" field'
+            
+            articles = news_data['articles']
+            if not isinstance(articles, list):
+                logger.error(f"[{request_id}] Invalid AI response: 'articles' is not a list")
+                return None, 'Invalid AI response: "articles" is not a list'
+            
+            # Validate each article
+            for i, article in enumerate(articles):
+                required_fields = ['title', 'description', 'category', 'source']
+                for field in required_fields:
+                    if field not in article:
+                        logger.error(f"[{request_id}] Invalid article at index {i}: missing field '{field}'")
+                        return None, f'Invalid article at index {i}: missing field "{field}"'
+            
+            logger.info(f"[{request_id}] Successfully fetched {len(articles)} news articles")
+            return articles, None
             
         except Exception as e:
             return None, format_error_message(e, self.model_id, request_id)

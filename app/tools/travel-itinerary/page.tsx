@@ -1,16 +1,15 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import { BackgroundPattern } from "@/components/background-pattern"
+import { PageLayout } from "@/components/page-layout"
+import { PageHeader } from "@/components/page-header"
+import { FeatureCards } from "@/components/feature-cards"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, MapPin, Plane, Calendar, DollarSign, Loader2, ChevronLeft, ChevronRight, Shield, Trash2 } from "lucide-react"
-import Link from "next/link"
+import { MapPin, Plane, Calendar, DollarSign, Loader2, Shield, Trash2 } from "lucide-react"
 import { useModel } from "@/components/model-context"
+import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/lib/error-utils"
 
 interface TravelActivity {
   time: string;
@@ -55,7 +54,74 @@ export default function TravelItineraryPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [results, setResults] = useState<TravelItineraryResult | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [currentCardIndex, setCurrentCardIndex] = useState(0)
+
+  // Get today's date in YYYY-MM-DD format for minimum date validation
+  const today = new Date().toISOString().split('T')[0]
+
+  // Calculate minimum end date based on start date
+  const getMinEndDate = () => {
+    if (!startDate) return today
+    const start = new Date(startDate)
+    const nextDay = new Date(start)
+    nextDay.setDate(start.getDate() + 1)
+    return nextDay.toISOString().split('T')[0]
+  }
+
+  // Calculate maximum start date based on end date
+  const getMaxStartDate = () => {
+    if (!endDate) return ""
+    const end = new Date(endDate)
+    const prevDay = new Date(end)
+    prevDay.setDate(end.getDate() - 1)
+    return prevDay.toISOString().split('T')[0]
+  }
+
+  // Handle start date change
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date)
+    // If end date is before or equal to new start date, clear it
+    if (endDate && date && endDate <= date) {
+      setEndDate("")
+    }
+  }
+
+  // Handle end date change
+  const handleEndDateChange = (date: string) => {
+    setEndDate(date)
+  }
+
+  // Check if current date selection is valid
+  const isDateSelectionValid = () => {
+    if (!startDate || !endDate) return true
+    return startDate < endDate
+  }
+
+  // Validate form data
+  const validateForm = () => {
+    if (!destination.trim()) {
+      return "Please enter a destination"
+    }
+    if (!budget || parseInt(budget) <= 0) {
+      return "Please enter a valid budget amount"
+    }
+    if (!startDate) {
+      return "Please select a start date"
+    }
+    if (!endDate) {
+      return "Please select an end date"
+    }
+    if (startDate >= endDate) {
+      return "End date must be after start date"
+    }
+    if (!travelers || parseInt(travelers) < 1) {
+      return "Please enter a valid number of travelers"
+    }
+    if (preferences.length === 0) {
+      return "Please select at least one travel preference"
+    }
+    return null
+  }
+
 
 
   const featureCards = [
@@ -94,17 +160,13 @@ export default function TravelItineraryPage() {
     )
   }
 
-  const nextCard = () => {
-    setCurrentCardIndex((prev) => (prev + 1) % featureCards.length)
-  }
 
-  const prevCard = () => {
-    setCurrentCardIndex((prev) => (prev - 1 + featureCards.length) % featureCards.length)
-  }
 
   const handleGenerateItinerary = async () => {
-    if (!destination.trim() || !budget || !startDate || !endDate || !travelers || preferences.length === 0) {
-      setError("Please fill in all required fields and select at least one preference.")
+    // Validate form first
+    const validationError = validateForm()
+    if (validationError) {
+      setError(validationError)
       return
     }
     
@@ -136,25 +198,22 @@ export default function TravelItineraryPage() {
       clearTimeout(timeoutId);
       
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to generate itinerary')
+        const errorMessage = await handleApiError(response, 'Failed to generate itinerary')
+        throw new Error(errorMessage)
       }
+      
+      validateJsonResponse(response)
       
       const data = await response.json()
       setResults(data)
     } catch (error) {
       console.error('Error generating itinerary:', error)
-      if (error instanceof Error && error.name === 'AbortError') {
-        setError('Request timed out. Please try again.')
-      } else {
-        setError(error instanceof Error ? error.message : 'An unexpected error occurred')
-      }
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
+      setError(getUserFriendlyError(errorMessage, 'travel'))
     } finally {
       setIsProcessing(false)
     }
   }
-
-
 
   const clearResults = () => {
     setResults(null)
@@ -194,121 +253,14 @@ export default function TravelItineraryPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <BackgroundPattern />
-      <Header />
-      
-      <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          {/* Header Section */}
-          <div className="mb-8">
-            <Link href="/dashboard">
-              <Button variant="ghost" className="mb-4">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-            <h1 className="text-3xl font-bold tracking-tight mb-4 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
-              Travel Itinerary Builder
-            </h1>
-            <p className="text-slate-700 dark:text-slate-300 text-lg">
-              Create personalized travel plans with AI recommendations for destinations, activities, and budget optimization.
-            </p>
-          </div>
+    <PageLayout>
+      <div className="max-w-6xl mx-auto">
+        <PageHeader
+          title="Travel Itinerary Builder"
+          description="Create personalized travel plans with AI recommendations for destinations, activities, and budget optimization."
+        />
 
-          {/* Feature Cards - Grid on large screens, Carousel on mobile */}
-          <div className="mb-12">
-            {/* Desktop/Tablet Grid View */}
-            <div className="hidden md:grid md:grid-cols-3 gap-6">
-              {featureCards.map((card, index) => (
-                <Card key={index} className="border-amber-200 dark:border-amber-800">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                        {(() => {
-                          const IconComponent = card.icon;
-                          return <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
-                        })()}
-                      </div>
-                      <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
-                        {card.badge}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-lg">{card.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-sm">
-                      {card.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* Mobile Carousel View */}
-            <div className="md:hidden">
-              <div className="relative">
-                <div className="flex justify-center">
-                  <Card className="border-amber-200 dark:border-amber-800 max-w-md w-full">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
-                          {(() => {
-                            const IconComponent = featureCards[currentCardIndex].icon;
-                            return <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
-                          })()}
-                        </div>
-                        <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
-                          {featureCards[currentCardIndex].badge}
-                        </Badge>
-                      </div>
-                      <CardTitle className="text-lg">{featureCards[currentCardIndex].title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-sm">
-                        {featureCards[currentCardIndex].description}
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                {/* Carousel Navigation */}
-                <div className="flex justify-center items-center mt-4 space-x-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={prevCard}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  
-                  <div className="flex space-x-2">
-                    {featureCards.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentCardIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentCardIndex
-                            ? 'bg-amber-600 dark:bg-amber-400'
-                            : 'bg-gray-300 dark:bg-gray-600'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={nextCard}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <FeatureCards cards={featureCards} />
 
           {/* Travel Input Form Section */}
           <Card className="mb-8 border-amber-200 dark:border-amber-800">
@@ -359,10 +311,19 @@ export default function TravelItineraryPage() {
                   <input
                     id="startDate"
                     type="date"
+                    min={today}
+                    max={getMaxStartDate()}
                     value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    onChange={(e) => handleStartDateChange(e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
+                      startDate && endDate && !isDateSelectionValid()
+                        ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
+                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    }`}
                   />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Select a date from today onwards
+                  </p>
                 </div>
                 
                 <div>
@@ -372,10 +333,34 @@ export default function TravelItineraryPage() {
                   <input
                     id="endDate"
                     type="date"
+                    min={getMinEndDate()}
                     value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    onChange={(e) => handleEndDateChange(e.target.value)}
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
+                      startDate && endDate && !isDateSelectionValid()
+                        ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
+                        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    }`}
                   />
+                  <p className={`text-xs mt-1 ${
+                    startDate && endDate && !isDateSelectionValid()
+                      ? 'text-red-500 dark:text-red-400'
+                      : 'text-gray-500 dark:text-gray-400'
+                  }`}>
+                    {startDate && endDate && !isDateSelectionValid()
+                      ? 'End date must be after start date'
+                      : startDate && endDate && isDateSelectionValid()
+                        ? (() => {
+                            const start = new Date(startDate)
+                            const end = new Date(endDate)
+                            const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+                            return `${days} day${days !== 1 ? 's' : ''} trip`
+                          })()
+                        : startDate 
+                          ? `Select a date after ${startDate}` 
+                          : 'Select a date after your start date'
+                    }
+                  </p>
                 </div>
                 
                 <div>
@@ -448,19 +433,29 @@ export default function TravelItineraryPage() {
                     </svg>
                   </div>
                   <CardTitle className="text-red-700 dark:text-red-300">
-                    Error
+                    Unable to Generate Itinerary
                   </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-                <Button 
-                  variant="outline" 
-                  className="mt-3 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/10"
-                  onClick={() => setError(null)}
-                >
-                  Dismiss
-                </Button>
+                <p className="text-sm text-red-600 dark:text-red-400 mb-3">{error}</p>
+                <div className="flex space-x-2">
+                  <Button 
+                    variant="outline" 
+                    className="border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/10"
+                    onClick={() => setError(null)}
+                  >
+                    Dismiss
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/10"
+                    onClick={handleGenerateItinerary}
+                    disabled={isProcessing}
+                  >
+                    Try Again
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
@@ -650,10 +645,6 @@ export default function TravelItineraryPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-
-      <Footer />
-      <ScrollToTop />
-    </div>
-  )
-} 
+      </PageLayout>
+    )
+  } 

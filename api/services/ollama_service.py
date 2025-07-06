@@ -1,10 +1,10 @@
 import json
 import logging
 import requests
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from config import logger
 from utils.env_utils import should_initialize_local_models
-from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, MODEL_CONFIGS
+from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT, MODEL_CONFIGS
 from utils.response_utils import (
     safe_json_parse, 
     validate_response_structure, 
@@ -246,6 +246,63 @@ class OllamaService:
                 return None, validation_error
             
             return itinerary_data, None
+            
+        except Exception as e:
+            return None, format_error_message(e, model_id, request_id)
+    
+    def fetch_news_by_category(self, categories: List[str], region: str, model_id: str, request_id: str) -> tuple[Optional[List[Dict[str, Any]]], Optional[str]]:
+        """
+        Fetch news articles by category and region using local Ollama model
+        Only available in development environment
+        """
+        if not self.is_development:
+            return None, "Local models are not available in production environment. Please use DeepSeek API."
+        
+        if not self.is_available():
+            return None, "Local Ollama service not available. Please ensure Ollama is running."
+        
+        if not self.is_model_available(model_id):
+            return None, f"Model {model_id} not available. Please ensure the model is loaded in Ollama."
+        
+        # Use common prompt from prompts module
+        categories_text = ", ".join(categories)
+        prompt = NEWS_FETCH_PROMPT.format(categories=categories_text, region=region)
+        
+        try:
+            log_request_start(request_id, model_id, "news fetching")
+            
+            # Call Ollama API
+            ai_response, error = self._call_ollama(prompt, model_id, request_id)
+            if error:
+                return None, error
+            
+            log_request_success(request_id, model_id, len(ai_response), "news fetching")
+            
+            # Parse and validate response using common utilities
+            news_data, error = safe_json_parse(ai_response, request_id, model_id)
+            if error:
+                return None, error
+            
+            # Validate the response structure
+            if 'articles' not in news_data:
+                logger.error(f"[{request_id}] Invalid AI response: missing 'articles' field")
+                return None, 'Invalid AI response: missing "articles" field'
+            
+            articles = news_data['articles']
+            if not isinstance(articles, list):
+                logger.error(f"[{request_id}] Invalid AI response: 'articles' is not a list")
+                return None, 'Invalid AI response: "articles" is not a list'
+            
+            # Validate each article
+            for i, article in enumerate(articles):
+                required_fields = ['title', 'description', 'category', 'source']
+                for field in required_fields:
+                    if field not in article:
+                        logger.error(f"[{request_id}] Invalid article at index {i}: missing field '{field}'")
+                        return None, f'Invalid article at index {i}: missing field "{field}"'
+            
+            logger.info(f"[{request_id}] Successfully fetched {len(articles)} news articles")
+            return articles, None
             
         except Exception as e:
             return None, format_error_message(e, model_id, request_id) 
