@@ -1,7 +1,9 @@
 from flask import Blueprint, request
 from datetime import datetime
 import logging
-from services.news_service import NewsService
+from services.deepseek_service import DeepSeekService
+from services.ollama_service import OllamaService
+from utils.env_utils import should_initialize_local_models
 from utils.response_helpers import success_response, error_response, validate_json_request, validate_required_field
 from config import logger
 
@@ -9,18 +11,27 @@ from config import logger
 news_bp = Blueprint('news', __name__)
 
 # Initialize services
-news_service = NewsService()
+deepseek_service = DeepSeekService()
 
-@news_bp.route('/digest', methods=['POST'])
-def create_news_digest():
+# Only initialize Ollama service in development
+is_development = should_initialize_local_models()
+if is_development:
+    ollama_service = OllamaService()
+    logger.info("News routes: Ollama service initialized for development")
+else:
+    ollama_service = None
+    logger.info("News routes: Ollama service not initialized in production")
+
+@news_bp.route('/fetch', methods=['POST'])
+def fetch_news_by_category():
     """
-    Create a news digest from a list of articles
-    Expected input: JSON with 'articles' field (list of strings)
-    Returns: News digest with analysis in JSON format
+    Fetch news articles by category and region using selected AI model
+    Expected input: JSON with 'categories' field (list of strings), 'region' field (string), and 'model' field (string)
+    Returns: List of news articles in JSON format
     """
     # Log API invocation with timestamp
     request_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
-    logger.info(f"[{request_id}] News digest API invoked")
+    logger.info(f"[{request_id}] News fetch API invoked")
     
     try:
         # Validate request format
@@ -29,29 +40,47 @@ def create_news_digest():
             logger.warning(f"[{request_id}] Invalid request format")
             return error
         
-        # Validate articles list
-        articles, error = validate_required_field(data, 'articles', list)
+        # Validate categories list
+        categories, error = validate_required_field(data, 'categories', list)
         if error:
-            logger.warning(f"[{request_id}] Invalid articles field")
+            logger.warning(f"[{request_id}] Invalid categories field")
             return error
         
-        # Validate that articles is not empty and contains strings
-        if not articles:
-            return error_response('articles list cannot be empty', 400)
+        # Validate region
+        region, error = validate_required_field(data, 'region', str)
+        if error:
+            logger.warning(f"[{request_id}] Invalid region field")
+            return error
         
-        for i, article in enumerate(articles):
-            if not isinstance(article, str) or not article.strip():
-                return error_response(f'article at index {i} must be a non-empty string', 400)
+        # Validate that categories is not empty and contains strings
+        if not categories:
+            return error_response('categories list cannot be empty', 400)
         
-        # Log articles count (for monitoring, not the actual content for privacy)
-        logger.info(f"[{request_id}] Processing {len(articles)} articles")
+        for i, category in enumerate(categories):
+            if not isinstance(category, str) or not category.strip():
+                return error_response(f'category at index {i} must be a non-empty string', 400)
         
-        # Create news digest using service
-        digest_data, error = news_service.create_news_digest(articles, request_id)
+        # Get model selection (default to deepseek-api if not provided)
+        selected_model = data.get('model', 'deepseek-api')
+        logger.info(f"[{request_id}] Using model: {selected_model}")
+        
+        # Log categories and region (for monitoring, not the actual content for privacy)
+        logger.info(f"[{request_id}] Fetching news for categories: {categories} in region: {region}")
+        
+        # Route to appropriate service based on model selection
+        if selected_model in ['local-deepseek-r1', 'local-llama3']:
+            if not is_development:
+                return error_response("Local models are not available in production environment. Please use DeepSeek API.", 400)
+            if ollama_service is None:
+                return error_response("Local Ollama service is not available.", 500)
+            news_data, error = ollama_service.fetch_news_by_category(categories, region, selected_model, request_id)
+        else:  # default to deepseek-api
+            news_data, error = deepseek_service.fetch_news_by_category(categories, region, request_id)
+        
         if error:
             return error_response(error, 500)
         
-        return success_response(digest_data)
+        return success_response({"articles": news_data})
         
     except Exception as e:
         logger.error(f"[{request_id}] Internal server error: {str(e)}")
