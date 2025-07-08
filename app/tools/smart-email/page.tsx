@@ -12,7 +12,7 @@ import { Textarea } from "../../../components/ui/textarea"
 import { ArrowLeft, Mail, Sparkles, Target, Shield, Zap, Loader2, Copy, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { useModel } from "@/components/model-context"
-import { getUserFriendlyError, handleApiError, validateJsonResponse } from "../../../lib/error-utils"
+import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/components/utils/error-utils"
 
 interface EmailAnalysis {
   tone: string;
