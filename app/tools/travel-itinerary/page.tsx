@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Plane, Calendar, DollarSign, Loader2, Shield, Trash2 } from "lucide-react"
 import { useModel } from "@/components/model-context"
-import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/lib/error-utils"
+import { getUserFriendlyError, handleApiError, validateJsonResponse } from "../../lib/error-utils"
 
 interface TravelActivity {
   time: string;
