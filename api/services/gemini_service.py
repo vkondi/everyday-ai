@@ -1,33 +1,29 @@
-from typing import Dict, Any, Optional, List
 from config import logger
-from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT, SYSTEM_MESSAGES, MODEL_CONFIGS
+from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, MODEL_CONFIGS, SYSTEM_MESSAGES, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT
 from utils.response_utils import (
-    safe_json_parse, 
-    validate_response_structure, 
-    format_error_message,
-    log_request_start,
-    log_request_success
-)
+    log_request_start, log_request_success, safe_json_parse, validate_response_structure, format_error_message)
+from typing import Dict, Any, Optional, List
+from google.genai import types
 
-class DeepSeekService:
+class GeminiService:
     """
-    Service class for interacting with DeepSeek AI API
+    Service class for interacting with Gemini AI API
     """
     
     def __init__(self):
-        from config import deepseek_client
-        self.client = deepseek_client
-        self.model_id = "deepseek-api"
-    
-    def is_available(self) -> bool:
+        from config import gemini_client
+        self.client = gemini_client
+        self.model_id = "gemini-flash"
+        
+    def is_available(self):
         """
-        Check if the DeepSeek service is available (API key configured)
+        Check if Gemini AI client is available
         """
         return self.client is not None
     
     def enhance_email(self, email_content: str, request_id: str) -> tuple[Optional[Dict[str, Any]], Optional[str]]:
         """
-        Enhance email content using DeepSeek AI
+        Enhance email content using Gemini Flash AI
         
         Args:
             email_content: The original email content to enhance
@@ -38,7 +34,7 @@ class DeepSeekService:
         """
         if not self.is_available():
             logger.error(f"[{request_id}] API key not configured. Cannot proceed with enhancement.")
-            return None, "API key not configured. Please set DEEPSEEK_API_KEY environment variable."
+            return None, "API key not configured. Please set GEMINI_API_KEY environment variable."
         
         # Use common prompt from prompts module
         prompt = EMAIL_ENHANCEMENT_PROMPT.format(email_content=email_content)
@@ -49,29 +45,22 @@ class DeepSeekService:
             # Get model configuration
             config = MODEL_CONFIGS[self.model_id]
             
-            # Call DeepSeek AI with timeout
-            response = self.client.chat.completions.create(
+            # Call Gemini API
+            response = self.client.models.generate_content(
                 model=config["model"],
-                messages=[
-                    {
-                        "role": "system",
-                        "content": SYSTEM_MESSAGES[self.model_id]
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                response_format={
-                    'type': 'json_object'
-                },
-                temperature=config["temperature"],
-                max_tokens=config["max_tokens"],
-                timeout=config["timeout"]
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    responseMimeType="application/json",
+                    temperature=config["temperature"],
+                    maxOutputTokens=config["max_tokens"],
+                    topP=config.get("top_p", 0.9),
+                    system_instruction=SYSTEM_MESSAGES[self.model_id],
+                    thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
+                )
             )
             
             # Extract AI response
-            ai_response = response.choices[0].message.content.strip()
+            ai_response = response.text.strip()
             log_request_success(request_id, self.model_id, len(ai_response), "email enhancement")
             
             # Parse and validate response using common utilities
@@ -91,10 +80,10 @@ class DeepSeekService:
             
         except Exception as e:
             return None, format_error_message(e, self.model_id, request_id)
-    
+        
     def generate_itinerary(self, travel_data: Dict[str, Any], request_id: str) -> tuple[Optional[Dict[str, Any]], Optional[str]]:
         """
-        Generate travel itinerary using DeepSeek AI with enhanced reliability
+        Generate travel itinerary using Gemini AI with enhanced reliability
         
         Args:
             travel_data: Dictionary containing destination, budget, start_date, end_date, travelers, preferences
@@ -104,7 +93,7 @@ class DeepSeekService:
             (itinerary_data, error_message) - if error_message is not None, the request failed
         """
         if not self.is_available():
-            return None, "API key not configured. Please set DEEPSEEK_API_KEY environment variable."
+            return None, "API key not configured. Please set GEMINI_API_KEY environment variable."
         
         # Extract travel details
         destination = travel_data['destination']
@@ -137,29 +126,22 @@ class DeepSeekService:
             # Get model configuration
             config = MODEL_CONFIGS[self.model_id]
             
-            # Call DeepSeek AI
-            response = self.client.chat.completions.create(
+            # Call Gemini API
+            response = self.client.models.generate_content(
                 model=config["model"],
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an expert travel planner. Create detailed, realistic travel itineraries in the exact JSON format requested."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                response_format={
-                    'type': 'json_object'
-                },
-                temperature=config["temperature"],
-                max_tokens=config["max_tokens"],
-                timeout=config["timeout"]
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    responseMimeType="application/json",
+                    temperature=config["temperature"],
+                    maxOutputTokens=config["max_tokens"],
+                    topP=config.get("top_p", 0.9),
+                    system_instruction="You are an expert travel planner. Create detailed, realistic travel itineraries in the exact JSON format requested.",
+                    thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
+                )
             )
             
             # Extract AI response
-            ai_response = response.choices[0].message.content.strip()
+            ai_response = response.text.strip()
             log_request_success(request_id, self.model_id, len(ai_response), "itinerary generation")
             
             # Parse and validate response using common utilities
@@ -182,7 +164,7 @@ class DeepSeekService:
     
     def fetch_news_by_category(self, categories: List[str], region: str, request_id: str) -> tuple[Optional[List[Dict[str, Any]]], Optional[str]]:
         """
-        Fetch news articles by category and region using DeepSeek AI
+        Fetch news articles by category and region using Gemini AI
         
         Args:
             categories: List of news categories to fetch
@@ -194,7 +176,7 @@ class DeepSeekService:
         """
         if not self.is_available():
             logger.error(f"[{request_id}] API key not configured. Cannot fetch news.")
-            return None, "API key not configured. Please set DEEPSEEK_API_KEY environment variable."
+            return None, "API key not configured. Please set GEMINI_API_KEY environment variable."
         
         # Use common prompt from prompts module
         categories_text = ", ".join(categories)
@@ -206,29 +188,22 @@ class DeepSeekService:
             # Get model configuration
             config = MODEL_CONFIGS[self.model_id]
             
-            # Call DeepSeek AI
-            response = self.client.chat.completions.create(
+            # Call Gemini API
+            response = self.client.models.generate_content(
                 model=config["model"],
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an expert news aggregator. You generate realistic news articles based on specified categories and regions. Always respond in the exact JSON format requested."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                response_format={
-                    'type': 'json_object'
-                },
-                temperature=config["temperature"],
-                max_tokens=3000,  # Higher token limit for news articles
-                timeout=config["timeout"]
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    responseMimeType="application/json",
+                    temperature=config["temperature"],
+                    maxOutputTokens=config["max_tokens"],
+                    topP=config.get("top_p", 0.9),
+                    system_instruction="You are an expert news aggregator. You generate realistic news articles based on specified categories and regions. Always respond in the exact JSON format requested.",
+                    thinking_config=types.ThinkingConfig(thinking_budget=0) # Disables thinking
+                )
             )
             
             # Extract AI response
-            ai_response = response.choices[0].message.content.strip()
+            ai_response = response.text.strip()
             log_request_success(request_id, self.model_id, len(ai_response), "news fetching")
             
             # Parse and validate response using common utilities
@@ -259,5 +234,3 @@ class DeepSeekService:
             
         except Exception as e:
             return None, format_error_message(e, self.model_id, request_id)
-    
- 

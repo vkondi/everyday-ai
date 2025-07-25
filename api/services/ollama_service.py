@@ -1,5 +1,4 @@
 import json
-import logging
 import requests
 from typing import Dict, Any, Optional, List
 from config import logger
@@ -139,6 +138,14 @@ class OllamaService:
     def enhance_email(self, email_content: str, model_id: str, request_id: str) -> tuple[Optional[Dict[str, Any]], Optional[str]]:
         """
         Enhance email content using local Ollama model
+        
+        Args:
+            email_content: The original email content to enhance
+            request_id: Unique identifier for logging
+            
+        Returns:
+            (enhanced_data, error_message) - if error_message is not None, the request failed
+            
         Only available in development environment
         """
         if not self.is_development:

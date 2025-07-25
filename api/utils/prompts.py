@@ -137,7 +137,8 @@ Respond with JSON only.
 SYSTEM_MESSAGES = {
     "deepseek-api": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested.",
     "local-deepseek-r1": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested.",
-    "local-llama3": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested."
+    "local-llama3": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested.",
+    "gemini-flash": "You are an expert email writing assistant. You analyze emails and provide enhancements with specific improvements. Always respond in the exact JSON format requested."
 }
 
 # Model-specific configurations
@@ -157,6 +158,13 @@ MODEL_CONFIGS = {
     },
     "local-llama3": {
         "model": "llama3",
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 2000,
+        "timeout": 60
+    },
+    "gemini-flash": {
+        "model": "gemini-2.5-flash",
         "temperature": 0.7,
         "top_p": 0.9,
         "max_tokens": 2000,
