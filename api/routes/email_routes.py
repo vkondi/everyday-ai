@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from datetime import datetime
-import logging
 from services.deepseek_service import DeepSeekService
 from services.ollama_service import OllamaService
+from services.gemini_service import GeminiService
 from utils.env_utils import should_initialize_local_models
 from utils.response_helpers import success_response, error_response, validate_json_request, validate_required_field
 from config import logger
@@ -12,6 +12,7 @@ email_bp = Blueprint('email', __name__)
 
 # Initialize services
 deepseek_service = DeepSeekService()
+gemini_service = GeminiService()
 
 # Only initialize Ollama service in development
 is_development = should_initialize_local_models()
@@ -70,6 +71,10 @@ def enhance_email():
             if ollama_service is None:
                 return error_response("Local Ollama service is not available.", 500)
             enhanced_data, error = ollama_service.enhance_email(email_content, selected_model, request_id)
+        elif selected_model == 'gemini-flash':
+            if not gemini_service.is_available():
+                return error_response("Gemini AI API key is not configured. Please set GEMINI_AI_API_KEY environment variable.", 500)
+            enhanced_data, error = gemini_service.enhance_email(email_content, request_id)
         else:  # default to deepseek-api
             enhanced_data, error = deepseek_service.enhance_email(email_content, request_id)
         

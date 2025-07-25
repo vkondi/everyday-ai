@@ -1,8 +1,5 @@
-import json
-import logging
 from typing import Dict, Any, Optional, List
 from config import logger
-import time
 from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT, SYSTEM_MESSAGES, MODEL_CONFIGS
 from utils.response_utils import (
     safe_json_parse, 
@@ -18,8 +15,8 @@ class DeepSeekService:
     """
     
     def __init__(self):
-        from config import client
-        self.client = client
+        from config import deepseek_client
+        self.client = deepseek_client
         self.model_id = "deepseek-api"
     
     def is_available(self) -> bool:
@@ -263,53 +260,4 @@ class DeepSeekService:
         except Exception as e:
             return None, format_error_message(e, self.model_id, request_id)
     
-    def _generate_fallback_response(self, travel_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Generate a fallback response when the AI service fails
-        """
-        destination = travel_data['destination']
-        budget = travel_data['budget']
-        start_date = travel_data['start_date']
-        end_date = travel_data['end_date']
-        travelers = travel_data['travelers']
-        
-        return {
-            "destination": destination,
-            "total_cost": f"${budget}",
-            "budget_status": "within_budget",
-            "daily_itinerary": [
-                {
-                    "day": 1,
-                    "date": start_date,
-                    "weather": "sunny, 25°C",
-                    "activities": [
-                        {
-                            "time": "09:00",
-                            "description": f"Arrive in {destination}",
-                            "type": "sightseeing",
-                            "cost": "$0",
-                            "location": f"{destination} Airport"
-                        },
-                        {
-                            "time": "14:00",
-                            "description": f"Explore {destination} city center",
-                            "type": "sightseeing",
-                            "cost": "$50",
-                            "location": f"{destination} Downtown"
-                        }
-                    ]
-                }
-            ],
-            "travel_tips": [
-                f"Welcome to {destination}!",
-                "Check local weather before your trip",
-                "Keep important documents safe"
-            ],
-            "budget_breakdown": {
-                "accommodation": f"${budget // 2}",
-                "food": f"${budget // 4}",
-                "activities": f"${budget // 8}",
-                "transportation": f"${budget // 8}",
-                "other": f"${budget // 8}"
-            }
-        } 
+ 

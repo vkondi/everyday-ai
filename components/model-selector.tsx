@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export type AIModel = "deepseek-api" | "local-deepseek-r1" | "local-llama3"
+export type AIModel = "deepseek-api" | "local-deepseek-r1" | "local-llama3" | "gemini-flash";
 
 interface ModelSelectorProps {
   selectedModel: AIModel
@@ -24,6 +24,13 @@ export function ModelSelector({ selectedModel, onModelChange }: ModelSelectorPro
     {
       id: "deepseek-api" as AIModel,
       name: "DeepSeek API",
+      description: "Cloud-based AI model",
+      icon: Globe,
+      alwaysVisible: true,
+    },
+     {
+      id: "gemini-flash" as AIModel,
+      name: "Gemini 2.5 Flash",
       description: "Cloud-based AI model",
       icon: Globe,
       alwaysVisible: true,

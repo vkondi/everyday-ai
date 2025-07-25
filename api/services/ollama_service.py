@@ -1,5 +1,4 @@
 import json
-import logging
 import requests
 from typing import Dict, Any, Optional, List
 from config import logger
