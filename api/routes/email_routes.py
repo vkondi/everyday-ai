@@ -73,7 +73,7 @@ def enhance_email():
             enhanced_data, error = ollama_service.enhance_email(email_content, selected_model, request_id)
         elif selected_model == 'gemini-flash':
             if not gemini_service.is_available():
-                return error_response("Gemini AI API key is not configured. Please set GEMINI_AI_API_KEY environment variable.", 500)
+                return error_response("Gemini AI API key is not configured. Please set GEMINI_API_KEY environment variable.", 500)
             enhanced_data, error = gemini_service.enhance_email(email_content, request_id)
         else:  # default to deepseek-api
             enhanced_data, error = deepseek_service.enhance_email(email_content, request_id)

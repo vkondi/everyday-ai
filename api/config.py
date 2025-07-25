@@ -43,7 +43,7 @@ else:
 
 # Access environment variables
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-GEMINI_AI_API_KEY = os.getenv("GEMINI_AI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Check if Deepseek API key is available
 if not DEEPSEEK_API_KEY:
@@ -56,17 +56,17 @@ else:
     logger.info(f"DeepSeek API key loaded successfully: {api_key_preview}")
 
 # Check if Gemini AI API key is available    
-if not GEMINI_AI_API_KEY:
-    logger.warning("GEMINI_AI_API_KEY environment variable is not set!")
+if not GEMINI_API_KEY:
+    logger.warning("GEMINI_API_KEY environment variable is not set!")
     logger.warning("Please set your Gemini AI API key in a .env file or as an environment variable.")
     logger.warning("You can get your API key from: https://ai.google.dev/gemini-api/docs/api-key")
 else:
     # Log API key (first 8 characters for security)
-    gemini_key_preview = GEMINI_AI_API_KEY[:8] + "..." if len(GEMINI_AI_API_KEY) > 8 else "***"
+    gemini_key_preview = GEMINI_API_KEY[:8] + "..." if len(GEMINI_API_KEY) > 8 else "***"
     logger.info(f"Gemini AI API key loaded successfully: {gemini_key_preview}")
     
 # Initialize OpenAI DeepSeek client
 deepseek_client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url="https://api.deepseek.com") if DEEPSEEK_API_KEY else None
 
 # Initialize Gemini client if API key is available
-gemini_client = genai.Client(api_key=GEMINI_AI_API_KEY) if GEMINI_AI_API_KEY else None
+gemini_client = genai.Client() if GEMINI_API_KEY else None
