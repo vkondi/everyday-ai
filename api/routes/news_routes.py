@@ -3,6 +3,7 @@ from datetime import datetime
 from services.deepseek_service import DeepSeekService
 from services.gemini_service import GeminiService
 from services.ollama_service import OllamaService
+from services.iplocation_service import IpLocationService
 from utils.env_utils import should_initialize_local_models
 from utils.response_helpers import success_response, error_response, validate_json_request, validate_required_field
 from config import logger
@@ -13,6 +14,7 @@ news_bp = Blueprint('news', __name__)
 # Initialize services
 deepseek_service = DeepSeekService()
 gemini_service = GeminiService()
+iplocation_service = IpLocationService()
 
 # Only initialize Ollama service in development
 is_development = should_initialize_local_models()
@@ -34,6 +36,11 @@ def fetch_news_by_category():
     request_id = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
     logger.info(f"[{request_id}] News fetch API invoked")
     
+    # Get client IP address from request headers
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    if client_ip and ',' in client_ip:
+        client_ip = client_ip.split(',')[0].strip()
+    
     try:
         # Validate request format
         data, error = validate_json_request(request)
@@ -47,11 +54,8 @@ def fetch_news_by_category():
             logger.warning(f"[{request_id}] Invalid categories field")
             return error
         
-        # Validate region
-        region, error = validate_required_field(data, 'region', str)
-        if error:
-            logger.warning(f"[{request_id}] Invalid region field")
-            return error
+        # Retrieve region based on client IP address
+        region = iplocation_service.get_location(client_ip,request_id)
         
         # Validate that categories is not empty and contains strings
         if not categories:
