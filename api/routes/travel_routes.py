@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from datetime import datetime
 from services.deepseek_service import DeepSeekService
+from services.gemini_service import GeminiService
 from services.ollama_service import OllamaService
 from utils.env_utils import should_initialize_local_models
 from utils.response_helpers import success_response, error_response, validate_json_request, validate_required_field
@@ -11,6 +12,7 @@ travel_bp = Blueprint('travel', __name__)
 
 # Initialize services
 deepseek_service = DeepSeekService()
+gemini_service = GeminiService()
 
 # Only initialize Ollama service in development
 is_development = should_initialize_local_models()
@@ -77,6 +79,10 @@ def generate_itinerary():
             if ollama_service is None:
                 return error_response("Local Ollama service is not available.", 500)
             itinerary_data, error = ollama_service.generate_itinerary(data, selected_model, request_id)
+        elif selected_model == 'gemini-flash':
+            if not gemini_service.is_available():
+                return error_response("Gemini AI API key is not configured. Please set GEMINI_API_KEY environment variable.", 500)
+            itinerary_data, error = gemini_service.generate_itinerary(data, request_id)
         else:  # default to deepseek-api
             itinerary_data, error = deepseek_service.generate_itinerary(data, request_id)
         

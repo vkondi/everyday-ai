@@ -46,6 +46,58 @@ Focus on:
 Respond only with the JSON structure, no additional text.
 """
 
+# Email Response JSON Schema. This schema defines the expected structure of the email enhancement response
+EMAIL_RESPONSE_JSON_SCHEMA = {
+  "type": "object",
+  "properties": {
+    "original_email_score": {
+      "type": "string"
+    },
+    "enhanced_email": {
+      "type": "string"
+    },
+    "recommended_subject": {
+      "type": "string"
+    },
+    "key_improvements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "tone": {
+          "type": "string"
+        },
+        "clarity": {
+          "type": "string"
+        },
+        "conciseness": {
+          "type": "string"
+        },
+        "call_to_action": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tone",
+        "clarity",
+        "conciseness",
+        "call_to_action"
+      ]
+    }
+  },
+  "required": [
+    "original_email_score",
+    "enhanced_email",
+    "recommended_subject",
+    "key_improvements",
+    "analysis"
+  ]
+}
+
 # Travel Itinerary Generation Prompts
 TRAVEL_ITINERARY_PROMPT = """
 Create a {trip_days}-day travel itinerary from {start_date} to {end_date} for {destination} with budget ${budget} for {travelers} travelers. 
@@ -92,6 +144,120 @@ Return ONLY valid JSON with no additional text or explanations:
 Important: Ensure the JSON is valid and complete. Include realistic activities, costs, and tips for {destination}. The total cost should be realistic for the budget of ${budget}.
 """
 
+# Travel Itinerary JSON Schema. This schema defines the expected structure of the travel itinerary response
+TRAVEL_ITINERARY_JSON_SCHEMA = {
+  "type": "object",
+  "properties": {
+    "destination": {
+      "type": "string"
+    },
+    "total_cost": {
+      "type": "string"
+    },
+    "budget_status": {
+      "type": "string"
+    },
+    "daily_itinerary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string"
+          },
+          "day_of_week": {
+            "type": "string"
+          },
+          "weather": {
+            "type": "string"
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "cost": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "time",
+                "description",
+                "type",
+                "cost",
+                "location"
+              ]
+            }
+          }
+        },
+        "required": [
+          "day",
+          "date",
+          "day_of_week",
+          "weather",
+          "activities"
+        ]
+      }
+    },
+    "travel_tips": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget_breakdown": {
+      "type": "object",
+      "properties": {
+        "accommodation": {
+          "type": "string"
+        },
+        "food": {
+          "type": "string"
+        },
+        "activities": {
+          "type": "string"
+        },
+        "transportation": {
+          "type": "string"
+        },
+        "other": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accommodation",
+        "food",
+        "activities",
+        "transportation",
+        "other"
+      ]
+    }
+  },
+  "required": [
+    "destination",
+    "total_cost",
+    "budget_status",
+    "daily_itinerary",
+    "travel_tips",
+    "budget_breakdown"
+  ]
+}
+
 # News Fetching Prompts
 NEWS_FETCH_PROMPT = """
 Generate 5 realistic news articles for the specified categories and country.
@@ -132,6 +298,42 @@ Guidelines:
 
 Respond with JSON only.
 """
+
+# News JSON Schema. This schema defines the expected structure of the news articles response
+NEWS_JSON_SCHEMA = {
+  "type": "object",
+  "properties": {
+    "articles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "category",
+          "source"
+        ]
+      }
+    }
+  },
+  "required": [
+    "articles"
+  ]
+}
 
 # System Messages for Different Models
 SYSTEM_MESSAGES = {
