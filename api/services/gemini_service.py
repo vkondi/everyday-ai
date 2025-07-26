@@ -1,5 +1,5 @@
 from config import logger
-from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, MODEL_CONFIGS, SYSTEM_MESSAGES, TRAVEL_ITINERARY_PROMPT, NEWS_FETCH_PROMPT
+from utils.prompts import EMAIL_ENHANCEMENT_PROMPT, EMAIL_RESPONSE_JSON_SCHEMA, MODEL_CONFIGS, SYSTEM_MESSAGES, TRAVEL_ITINERARY_PROMPT, TRAVEL_ITINERARY_JSON_SCHEMA, NEWS_FETCH_PROMPT, NEWS_JSON_SCHEMA
 from utils.response_utils import (
     log_request_start, log_request_success, safe_json_parse, validate_response_structure, format_error_message)
 from typing import Dict, Any, Optional, List
@@ -51,6 +51,7 @@ class GeminiService:
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     responseMimeType="application/json",
+                    response_json_schema=EMAIL_RESPONSE_JSON_SCHEMA,
                     temperature=config["temperature"],
                     maxOutputTokens=config["max_tokens"],
                     topP=config.get("top_p", 0.9),
@@ -132,6 +133,7 @@ class GeminiService:
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     responseMimeType="application/json",
+                    response_json_schema=TRAVEL_ITINERARY_JSON_SCHEMA,
                     temperature=config["temperature"],
                     maxOutputTokens=config["max_tokens"],
                     topP=config.get("top_p", 0.9),
@@ -194,6 +196,7 @@ class GeminiService:
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     responseMimeType="application/json",
+                    response_json_schema=NEWS_JSON_SCHEMA,
                     temperature=config["temperature"],
                     maxOutputTokens=config["max_tokens"],
                     topP=config.get("top_p", 0.9),
