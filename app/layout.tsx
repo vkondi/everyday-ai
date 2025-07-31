@@ -20,25 +20,35 @@ export const metadata: Metadata = {
   description: "AI-powered tools for everyday productivity",
   openGraph: {
     title: "Everyday AI",
-    description:
-      "AI-powered tools for everyday productivity",
+    description: "AI-powered tools for everyday productivity",
     type: "website",
-    url: "https://everyday-ai-tools.vercel.app/",
+    url: "https://everyday-ai-tools.vercel.app",
+    siteName: "Everyday AI",
     images: [
       {
         url: "https://everyday-ai-tools.vercel.app/thumbnail.png",
         width: 1912,
         height: 802,
-        alt: "Everyday AI",
+        alt: "Everyday AI - AI-powered tools for everyday productivity",
+        type: "image/png",
       },
     ],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Everyday AI",
-    description:
-      "AI-powered tools for everyday productivity",
+    description: "AI-powered tools for everyday productivity",
     images: ["https://everyday-ai-tools.vercel.app/thumbnail.png"],
+    creator: "@everydayai",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
   },
 };
 
@@ -50,6 +60,14 @@ export default function RootLayout({
   const token = process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN;
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:image:width" content="1912" />
+        <meta property="og:image:height" content="802" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:image:width" content="1912" />
+        <meta name="twitter:image:height" content="802" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
