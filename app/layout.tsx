@@ -60,14 +60,6 @@ export default function RootLayout({
   const token = process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN;
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:image:width" content="1912" />
-        <meta property="og:image:height" content="802" />
-        <meta property="og:image:type" content="image/png" />
-        <meta name="twitter:image:width" content="1912" />
-        <meta name="twitter:image:height" content="802" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
