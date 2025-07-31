@@ -16,8 +16,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Everyday AI - Dashboard",
+  title: "Everyday AI",
   description: "AI-powered tools for everyday productivity",
+  openGraph: {
+    title: "Everyday AI",
+    description:
+      "AI-powered tools for everyday productivity",
+    type: "website",
+    url: "https://everyday-ai-tools.vercel.app/",
+    images: [
+      {
+        url: "https://everyday-ai-tools.vercel.app/thumbnail.png",
+        width: 1912,
+        height: 802,
+        alt: "Everyday AI",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Everyday AI",
+    description:
+      "AI-powered tools for everyday productivity",
+    images: ["https://everyday-ai-tools.vercel.app/thumbnail.png"],
+  },
 };
 
 export default function RootLayout({
