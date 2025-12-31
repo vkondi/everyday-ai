@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModelProvider } from "@/components/model-context";
 import { Analytics } from '@vercel/analytics/next';
+import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/structured-data";
+import { SEO_CONFIG, SOCIAL_MEDIA, ROBOTS, VIEWPORT } from "@/lib/seo-constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,39 +18,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Everyday AI",
-  description: "AI-powered tools for everyday productivity",
+  title: SEO_CONFIG.siteName,
+  description: SEO_CONFIG.defaultDescription,
+  keywords: SEO_CONFIG.keywords,
   openGraph: {
-    title: "Everyday AI",
-    description: "AI-powered tools for everyday productivity",
-    type: "website",
-    url: "https://everyday-ai-tools.vercel.app",
-    siteName: "Everyday AI",
+    title: SEO_CONFIG.siteName,
+    description: SEO_CONFIG.defaultDescription,
+    type: SOCIAL_MEDIA.ogType,
+    url: SEO_CONFIG.siteUrl,
+    siteName: SEO_CONFIG.siteName,
     images: [
       {
-        url: "https://everyday-ai-tools.vercel.app/thumbnail.png",
+        url: SEO_CONFIG.siteUrl + SEO_CONFIG.images.ogImage,
         width: 1912,
         height: 802,
-        alt: "Everyday AI - AI-powered tools for everyday productivity",
+        alt: SOCIAL_MEDIA.imageAlt,
         type: "image/png",
       },
     ],
-    locale: "en_US",
+    locale: SOCIAL_MEDIA.locale,
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Everyday AI",
-    description: "AI-powered tools for everyday productivity",
-    images: ["https://everyday-ai-tools.vercel.app/thumbnail.png"],
-    creator: "@everydayai",
+    card: SOCIAL_MEDIA.twitterCard,
+    title: SEO_CONFIG.siteName,
+    description: SEO_CONFIG.defaultDescription,
+    images: [SEO_CONFIG.siteUrl + SEO_CONFIG.images.ogImage],
+    creator: SEO_CONFIG.social.twitter,
   },
-  robots: {
-    index: true,
-    follow: true,
+  robots: ROBOTS,
+  viewport: VIEWPORT,
+  alternates: {
+    canonical: SEO_CONFIG.siteUrl,
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
+  verification: {
+    google: "your-google-search-console-verification-code",
   },
 };
 
@@ -60,6 +63,13 @@ export default function RootLayout({
   const token = process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN;
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to external domains for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+        <link rel="preconnect" href="https://analytics.vercel.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -69,7 +79,38 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ModelProvider>{children}</ModelProvider>
+          <ModelProvider>
+            {/* Global Structured Data */}
+            <WebsiteStructuredData
+              name={SEO_CONFIG.siteName}
+              url={SEO_CONFIG.siteUrl}
+              description={SEO_CONFIG.description}
+              logo={SEO_CONFIG.siteUrl + SEO_CONFIG.images.logo}
+              sameAs={[
+                SEO_CONFIG.social.github,
+                SEO_CONFIG.social.twitter
+              ]}
+            />
+            <OrganizationStructuredData
+              type={SEO_CONFIG.structuredData.organization.type}
+              name={SEO_CONFIG.siteName}
+              url={SEO_CONFIG.siteUrl}
+              description={SEO_CONFIG.description}
+              logo={SEO_CONFIG.siteUrl + SEO_CONFIG.images.logo}
+              sameAs={[
+                SEO_CONFIG.social.github,
+                SEO_CONFIG.social.twitter
+              ]}
+              foundingDate={SEO_CONFIG.structuredData.organization.foundingDate}
+              contactPoint={{
+                telephone: SEO_CONFIG.contact.telephone,
+                contactType: SEO_CONFIG.structuredData.organization.contactType,
+                areaServed: SEO_CONFIG.structuredData.organization.areaServed,
+                availableLanguage: SEO_CONFIG.structuredData.organization.availableLanguages
+              }}
+            />
+            {children}
+          </ModelProvider>
         </ThemeProvider>
 
         {/* Cloudflare Web Analytics */}
