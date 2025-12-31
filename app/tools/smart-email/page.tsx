@@ -2,16 +2,16 @@
 
 import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import { BackgroundPattern } from "@/components/background-pattern"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { ScrollToTop } from "@/components/layout/scroll-to-top"
+import { BackgroundPattern } from "@/components/layout/background-pattern"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "../../../components/ui/textarea"
 import { ArrowLeft, Mail, Sparkles, Target, Shield, Zap, Loader2, Copy, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import { useModel } from "@/components/model-context"
+import { useModel } from "@/components/context/model-context"
 import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/components/utils/error-utils"
 
 interface EmailAnalysis {
@@ -96,8 +96,8 @@ export default function SmartEmailPage() {
       }
       
       validateJsonResponse(response)
-      
-      const data = await response.json()
+
+      const data = await response.json() as EmailEnhancementResult
       setResults(data)
     } catch (error) {
       console.error('Error refining email:', error)
@@ -455,4 +455,4 @@ export default function SmartEmailPage() {
       <ScrollToTop />
     </div>
   )
-} 
+}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button"
 import { ChevronUp } from "lucide-react"
 
 export function ScrollToTop() {

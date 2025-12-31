@@ -6,7 +6,7 @@ export function BackgroundPattern() {
       
       {/* Animated Stars */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {Array.from({ length: 20 }).map((_, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-amber-400 dark:bg-amber-300 rounded-full animate-ping"
@@ -22,7 +22,7 @@ export function BackgroundPattern() {
 
       {/* Floating Particles */}
       <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
+        {Array.from({ length: 15 }).map((_, i) => (
           <div
             key={i}
             className="absolute w-2 h-2 bg-amber-500/60 dark:bg-amber-400/60 rounded-full animate-bounce"
@@ -157,4 +157,4 @@ export function BackgroundPattern() {
       </div>
     </div>
   )
-} 
+}

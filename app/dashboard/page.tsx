@@ -1,9 +1,12 @@
-import { DashboardCard } from "@/components/dashboard-card"
-import { Footer } from "@/components/footer"
-import { Header } from "@/components/header"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import { BackgroundPattern } from "@/components/background-pattern"
+import { DashboardCard } from "@/components/features/dashboard-card"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
+import { ScrollToTop } from "@/components/layout/scroll-to-top"
+import { BackgroundPattern } from "@/components/layout/background-pattern"
 import { Mail, MapPin, Newspaper } from "lucide-react"
+import { SEO } from "@/components/seo/seo"
+import { Breadcrumb } from "@/components/navigation/breadcrumb"
+import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from "@/components/utils/seo-constants"
 
 export default function DashboardPage() {
   const tools = [
@@ -31,52 +34,71 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <BackgroundPattern />
-      <Header />
-      
-      <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Introduction Section */}
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
-              Welcome to Everyday AI
-            </h2>
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                Discover the power of artificial intelligence in your daily life. Our suite of intelligent tools is designed to enhance your productivity, 
-                streamline your workflow, and make complex tasks simple. From crafting perfect emails to planning dream vacations, 
-                let AI be your personal assistant for a smarter, more efficient tomorrow.
-              </p>
-            </div>
-          </section>
+    <>
+      <SEO
+        title={PAGE_SEO.dashboard.title}
+        description={PAGE_SEO.dashboard.description}
+        keywords={PAGE_SEO.dashboard.keywords}
+        canonical={`${SEO_CONFIG.siteUrl}/dashboard`}
+        ogTitle={PAGE_SEO.dashboard.ogTitle}
+        ogDescription={PAGE_SEO.dashboard.ogDescription}
+        ogUrl={`${SEO_CONFIG.siteUrl}/dashboard`}
+        ogType={SOCIAL_MEDIA.ogType}
+        twitterCard={SOCIAL_MEDIA.twitterCard}
+        twitterTitle={PAGE_SEO.dashboard.twitterTitle}
+        twitterDescription={PAGE_SEO.dashboard.twitterDescription}
+      />
 
-          {/* Tools Grid */}
-          <section>
-            <div className="mb-8">
-              <h3 className="text-2xl font-semibold tracking-tight mb-2 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
-                Intelligent Solutions Hub
-              </h3>
-              <p className="text-slate-700 dark:text-slate-300">Explore our curated collection of AI-powered tools designed to transform your daily tasks</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.map((tool) => (
-                <DashboardCard
-                  key={tool.title}
-                  title={tool.title}
-                  tag={tool.tag}
-                  description={tool.description}
-                  icon={tool.icon}
-                  href={tool.href}
-                />
-              ))}
-            </div>
-          </section>
-        </div>
-      </main>
+      <div className="min-h-screen flex flex-col relative">
+        <BackgroundPattern />
+        <Header />
+        
+        <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            {/* Breadcrumb */}
+            <Breadcrumb className="mb-6" />
 
-      <Footer />
-      <ScrollToTop />
-    </div>
+            {/* Introduction Section */}
+            <section className="mb-12">
+              <h1 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
+                Welcome to Everyday AI
+              </h1>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  Discover the power of artificial intelligence in your daily life. Our suite of intelligent tools is designed to enhance your productivity, 
+                  streamline your workflow, and make complex tasks simple. From crafting perfect emails to planning dream vacations, 
+                  let AI be your personal assistant for a smarter, more efficient tomorrow.
+                </p>
+              </div>
+            </section>
+
+            {/* Tools Grid */}
+            <section>
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold tracking-tight mb-2 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
+                  Intelligent Solutions Hub
+                </h2>
+                <p className="text-slate-700 dark:text-slate-300">Explore our curated collection of AI-powered tools designed to transform your daily tasks</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tools.map((tool) => (
+                  <DashboardCard
+                    key={tool.title}
+                    title={tool.title}
+                    tag={tool.tag}
+                    description={tool.description}
+                    icon={tool.icon}
+                    href={tool.href}
+                  />
+                ))}
+              </div>
+            </section>
+          </div>
+        </main>
+
+        <Footer />
+        <ScrollToTop />
+      </div>
+    </>
   )
-} 
+}

@@ -1,0 +1,42 @@
+# Robots.txt for Everyday AI
+# https://everyday-ai-tools.vercel.app/robots.txt
+
+# Allow all robots to index all pages
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://everyday-ai-tools.vercel.app/sitemap.xml
+
+# Crawl delay to be respectful to servers
+Crawl-delay: 1
+
+# Allow indexing of important pages
+Allow: /$
+Allow: /dashboard
+Allow: /tools/smart-email
+Allow: /tools/travel-itinerary
+Allow: /tools/news-digest
+
+# Disallow crawling of API routes and internal paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow crawling of public assets
+Allow: /public/
+Allow: /images/
+Allow: /css/
+Allow: /js/
+
+# Google-specific directives
+User-agent: Googlebot
+Allow: /
+
+# Bing-specific directives
+User-agent: Bingbot
+Allow: /
+
+# Yahoo-specific directives
+User-agent: Slurp
+Allow: /

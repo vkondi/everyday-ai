@@ -1,7 +1,9 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react"
-import { AIModel } from "./model-selector"
+import { createContext, useContext, useState, useEffect } from "react"
+import type { ReactNode } from "react"
+import type { AIModel } from "@/components/features/model-selector"
+
 
 interface ModelContextType {
   selectedModel: AIModel
@@ -20,11 +22,11 @@ export function ModelProvider({ children }: { children: ReactNode }) {
 
   // Load model from localStorage on mount
   useEffect(() => {
-    setMounted(true)
     const storedModel = localStorage?.getItem('everyday-ai-model') as AIModel
     if (storedModel && ['deepseek-api', 'local-deepseek-r1', 'local-llama3'].includes(storedModel)) {
       setSelectedModel(storedModel)
     }
+    setMounted(true)
   }, [])
 
   const value = {
@@ -50,4 +52,4 @@ export function useModel() {
     throw new Error("useModel must be used within a ModelProvider")
   }
   return context
-} 
+}

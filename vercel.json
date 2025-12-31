@@ -12,12 +12,56 @@
   ],
   "routes": [
     {
+      "src": "/sitemap",
+      "dest": "/sitemap.xml",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/robots",
+      "dest": "/robots.txt",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
       "src": "/api/(.*)",
       "dest": "api/index.py"
     },
     {
+      "src": "/public/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/_next/static/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/sitemap.xml",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
       "src": "/(.*)",
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "origin-when-cross-origin",
+        "X-XSS-Protection": "1; mode=block"
+      },
       "dest": "/$1"
     }
   ]
-} 
+}

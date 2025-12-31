@@ -87,7 +87,7 @@ export async function handleApiError(response: Response, defaultError: string): 
   const contentType = response.headers.get('content-type')
   if (contentType && contentType.includes('application/json')) {
     try {
-      const errorData = await response.json()
+      const errorData = await response.json() as { error?: string }
       return errorData.error || defaultError
     } catch (jsonError) {
       console.error('JSON parsing error:', jsonError)
@@ -112,4 +112,4 @@ export function validateJsonResponse(response: Response): void {
   if (!contentType || !contentType.includes('application/json')) {
     throw new Error('Server returned an invalid response format')
   }
-} 
+}

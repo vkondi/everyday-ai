@@ -36,7 +36,7 @@ export function ModelStatus() {
       try {
         const response = await fetch('/api/models')
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json() as ModelsResponse
           setModelStatus(data)
         } else {
           setError('Failed to check model status')
@@ -111,4 +111,4 @@ export function ModelStatus() {
       )}
     </div>
   )
-} 
+}
