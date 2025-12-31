@@ -11,31 +11,24 @@ Everyday AI is a comprehensive suite of intelligent tools that bring the power o
 ### 📧 Smart Email Assistant
 **Transform your communication with AI-powered email enhancement**
 
-- **Perfect Tone Detection**: Get instant feedback on your email's tone and receive suggestions for better communication
-- **Enhanced Readability**: Improve sentence structure and eliminate ambiguity for crystal clear messaging
-- **Professional Polish**: Add grammar corrections and industry-specific language for maximum impact
-- **Smart Subject Lines**: Receive AI-generated subject lines that increase open rates
-- **Real-time Analysis**: Get detailed feedback on tone, clarity, conciseness, and call-to-action effectiveness
+- **Tone Analysis & Enhancement**: AI analyzes email tone and provides professional suggestions for better communication
+- **Smart Subject Lines**: Generate compelling, click-worthy subject lines that improve open rates
 
 *Perfect for: Business communication, client emails, job applications, and personal correspondence*
 
-### 🗺️ Travel Itinerary Builder *(Coming Soon)*
+### 🗺️ Travel Itinerary Builder
 **Plan your dream vacation with AI-powered recommendations**
 
-- **Destination Planning**: Get personalized recommendations for places to visit based on your preferences
-- **Budget Optimization**: Smart cost management suggestions to maximize your travel budget
-- **Activity Scheduling**: Optimal timing recommendations for experiences and attractions
-- **Personalized Routes**: AI-curated itineraries that match your travel style and interests
+- **Personalized Planning**: AI-curated itineraries with destination recommendations and activity scheduling
+- **Budget Optimization**: Smart cost management with daily breakdowns and travel details
 
 *Perfect for: Vacation planning, business trips, weekend getaways, and bucket list adventures*
 
-### 📰 News Digest *(Coming Soon)*
+### 📰 News Digest
 **Stay informed with AI-curated news summaries**
 
-- **Smart Summaries**: Get concise, AI-generated summaries of the most important stories
-- **Personalized Feed**: News tailored to your specific interests and preferences
-- **Noise Filtering**: Focus on what matters to you, not clickbait headlines
-- **Trending Topics**: Stay updated on current events that impact your industry or interests
+- **Personalized News Feed**: AI-curated summaries tailored to your interests with regional content
+- **Smart Filtering**: Category-based news selection with noise filtering for relevant stories
 
 *Perfect for: Staying informed, industry research, market analysis, and general knowledge*
 
@@ -64,47 +57,89 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 4. **Get AI Insights**: Receive intelligent suggestions and improvements
 5. **Apply & Improve**: Use the recommendations to create better results
 
+## 🚀 Getting Started
+
+### Prerequisites
+- **Node.js 18+**: For running the Next.js frontend
+- **Python 3.8+**: For the Flask backend
+- **Git**: For cloning the repository
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/vkondi/everyday-ai.git
+   cd everyday-ai
+   ```
+
+2. **Install frontend dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables**
+
+   Create a `.env.local` file in the root directory:
+   ```bash
+   # DeepSeek API Key (required for cloud AI features)
+   DEEPSEEK_API_KEY=your_deepseek_api_key_here
+
+   # Gemini API Key (optional, for additional AI model)
+   GEMINI_API_KEY=your_gemini_api_key_here
+
+   # News API Key (optional, for news features)
+   NEWS_API_KEY=your_news_api_key_here
+
+   # Environment (development/production)
+   NODE_ENV=development
+   ```
+
+5. **Start the development servers**
+   ```bash
+   # Run both frontend and backend simultaneously
+   npm run dev
+
+   # Or run them separately:
+   # Terminal 1: Frontend
+   npm run next-dev
+
+   # Terminal 2: Backend
+   npm run flask-dev
+   ```
+
+6. **Open your browser**
+
+   Navigate to `http://localhost:3000` to access the application. The Flask API will be running on port 5328.
+
+### Optional: Local AI Models Setup
+
+For privacy-focused, offline AI processing (development only):
+
+1. **Install Ollama** - See [OLLAMA_SETUP.md](docs/OLLAMA_SETUP.md) for detailed instructions
+2. **Download models**:
+   ```bash
+   ollama pull deepseek-r1
+   ollama pull llama3
+   ```
+3. **Models will be automatically available in development mode**
+
 ## 🤖 AI Model Options
 
-### DeepSeek API (Default)
-- **Cloud-based**: No local setup required
-- **Fast**: Instant response times
-- **Reliable**: Always available
-- **Requires**: DeepSeek API key
-- **Environment**: Available in all environments
-
-### Local Models (Development Only)
-- **Local DeepSeek R1**: Privacy-focused local processing with DeepSeek R1 model
-- **Local Llama 3**: Fast local processing with Llama 3 model
-- **Privacy-focused**: All processing happens locally
-- **Offline**: Works without internet connection
-- **Customizable**: Full control over the models
-- **Requires**: Ollama installation and model downloads
-- **Setup**: See [OLLAMA_SETUP.md](docs/OLLAMA_SETUP.md) for installation guide
-- **Availability**: Only visible and functional in development environment
-- **Security**: Local models are completely disabled in production for security
+- **DeepSeek API (Default)**: Cloud-based, instant responses, requires API key, available in all environments
+- **Google Gemini Flash**: Fast AI model for content generation, cost-effective processing, requires API key
+- **Local Models (Dev Only)**: DeepSeek R1 & Llama 3 for offline processing, privacy-focused, requires [Ollama setup](docs/OLLAMA_SETUP.md)
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Next.js 14**: React framework with App Router for optimal performance
-- **TypeScript**: Type-safe development for better code quality
-- **Tailwind CSS**: Utility-first CSS framework for responsive design
-- **Lucide React**: Beautiful, customizable icons
-- **Framer Motion**: Smooth animations and transitions
-
-### Backend & AI
-- **Python Flask**: High-performance API framework
-- **DeepSeek AI**: Advanced language model for intelligent text processing
-- **Ollama Integration**: Local AI processing with DeepSeek R1 model
-- **News API**: Real-time news data integration
-- **RESTful APIs**: Clean, scalable API architecture
-
-### Development & Deployment
-- **ESLint & Prettier**: Code quality and formatting
-- **Vercel**: Seamless deployment and hosting
-- **GitHub**: Version control and collaboration
-- **Responsive Design**: Mobile-first approach with breakpoint optimization
+- **Frontend**: Next.js 15.5.9 with React 19.0.0, TypeScript, Tailwind CSS v4
+- **Backend**: Python Flask 3.1.1, DeepSeek AI, Google Gemini Flash, Ollama integration
+- **UI/UX**: Radix UI components, Lucide React icons, responsive design
+- **Deployment**: Vercel hosting with SEO optimization ([SEO Guide](docs/SEO_GUIDE.md))
 
 ## 🎨 User Experience Highlights
 
@@ -124,77 +159,17 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 - High contrast mode support
 - Focus indicators for better usability
 
-## 🔮 What's Next?
-
-We're constantly expanding our AI toolkit with new features and capabilities:
-
-- **Voice Input**: Speak to your AI assistants for hands-free operation
-- **Team Collaboration**: Share and collaborate on AI-enhanced content
-- **Custom Templates**: Save and reuse your favorite AI configurations
-- **Integration Hub**: Connect with your favorite productivity tools
-- **Advanced Analytics**: Track your productivity improvements over time
-
-## 💡 Use Cases
-
-### For Professionals
-- **Sales Teams**: Create compelling email campaigns and follow-ups
-- **Marketing**: Generate engaging content and subject lines
-- **Customer Service**: Craft clear, empathetic responses
-- **Executives**: Polish presentations and communications
-
-### For Students
-- **Academic Writing**: Improve essay clarity and structure
-- **Research**: Stay updated on academic developments
-- **Communication**: Enhance professional correspondence
-
-### For Travelers
-- **Vacation Planning**: Create detailed itineraries
-- **Business Travel**: Optimize travel schedules and budgets
-- **Adventure Seekers**: Discover unique destinations and experiences
-
-### For Everyone
-- **Personal Growth**: Improve communication skills
-- **Time Management**: Streamline daily tasks and workflows
-- **Knowledge Enhancement**: Stay informed and educated
-
-## 🎯 Our Mission
-
-We believe that AI should enhance human capabilities, not replace them. Our tools are designed to:
-- **Amplify Creativity**: Let AI handle the routine while you focus on innovation
-- **Boost Productivity**: Save time on repetitive tasks
-- **Improve Quality**: Get professional results every time
-- **Reduce Stress**: Simplify complex decisions and planning
-
-## 📞 Get Started
-
-Ready to experience the power of AI in your daily life? 
-
-1. **Explore Our Tools**: Try the Smart Email Assistant to see AI in action
-2. **Share Feedback**: Help us improve with your suggestions
-3. **Stay Updated**: Follow us for new features and improvements
 
 ## 📧 Contact
 
 Have questions, suggestions, or want to contribute? We'd love to hear from you!
 
-- **Email**: [vkondi@example.com](mailto:vkondi@example.com)
+- **Email**: [vkondi@gmail.com](mailto:vkondi@gmail.com)
 - **GitHub Issues**: [Report a bug or request a feature](https://github.com/vkondi/everyday-ai/issues)
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-**MIT License Summary:**
-- ✅ Use the software for any purpose
-- ✅ Modify the software
-- ✅ Distribute the software
-- ✅ Use it commercially
-- ✅ Use it privately
-- ✅ Sublicense it
-
-**Requirements:**
-- Include the original copyright notice
-- Include the MIT License text
 
 ---
 
