@@ -6,7 +6,7 @@ import { BackgroundPattern } from "@/components/layout/background-pattern"
 import { Mail, MapPin, Newspaper } from "lucide-react"
 import { SEO } from "@/components/seo/seo"
 import { Breadcrumb } from "@/components/navigation/breadcrumb"
-import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from "../../lib/seo-constants"
+import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from "@/components/utils/seo-constants"
 
 export default function DashboardPage() {
   const tools = [

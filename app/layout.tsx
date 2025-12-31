@@ -5,7 +5,7 @@ import { ModelProvider } from "@/components/context/model-context";
 import { Analytics } from '@vercel/analytics/next';
 import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/seo/structured-data";
 import { SEO } from "@/components/seo/seo";
-import { SEO_CONFIG, SOCIAL_MEDIA } from "../lib/seo-constants";
+import { SEO_CONFIG, SOCIAL_MEDIA } from "@/components/utils/seo-constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
