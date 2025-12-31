@@ -36,11 +36,11 @@ export function ThemeProvider({
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
     const storedTheme = localStorage?.getItem(storageKey) as Theme
     if (storedTheme) {
       setTheme(storedTheme)
     }
+    setMounted(true)
   }, [storageKey])
 
   useEffect(() => {
@@ -85,4 +85,4 @@ export const useTheme = () => {
     throw new Error("useTheme must be used within a ThemeProvider")
 
   return context
-} 
+}

@@ -22,11 +22,11 @@ export function ModelProvider({ children }: { children: ReactNode }) {
 
   // Load model from localStorage on mount
   useEffect(() => {
-    setMounted(true)
     const storedModel = localStorage?.getItem('everyday-ai-model') as AIModel
     if (storedModel && ['deepseek-api', 'local-deepseek-r1', 'local-llama3'].includes(storedModel)) {
       setSelectedModel(storedModel)
     }
+    setMounted(true)
   }, [])
 
   const value = {

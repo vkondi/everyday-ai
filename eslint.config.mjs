@@ -1,18 +1,12 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default [
   {
     files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
@@ -35,8 +29,10 @@ const eslintConfig = [
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/require-await": "off",
     },
   },
+  {
+    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]
+  }
 ];
-
-export default eslintConfig;
