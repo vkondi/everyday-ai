@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/context/theme-provider";
 import { ModelProvider } from "@/components/context/model-context";
 import { Analytics } from '@vercel/analytics/next';
 import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/seo/structured-data";
+import { SEO } from "@/components/seo/seo";
 import { SEO_CONFIG, SOCIAL_MEDIA, ROBOTS, VIEWPORT } from "@/lib/seo-constants";
 
 const geistSans = Geist({
@@ -16,44 +16,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  title: SEO_CONFIG.siteName,
-  description: SEO_CONFIG.defaultDescription,
-  keywords: SEO_CONFIG.keywords,
-  openGraph: {
-    title: SEO_CONFIG.siteName,
-    description: SEO_CONFIG.defaultDescription,
-    type: SOCIAL_MEDIA.ogType,
-    url: SEO_CONFIG.siteUrl,
-    siteName: SEO_CONFIG.siteName,
-    images: [
-      {
-        url: SEO_CONFIG.siteUrl + SEO_CONFIG.images.ogImage,
-        width: 1912,
-        height: 802,
-        alt: SOCIAL_MEDIA.imageAlt,
-        type: "image/png",
-      },
-    ],
-    locale: SOCIAL_MEDIA.locale,
-  },
-  twitter: {
-    card: SOCIAL_MEDIA.twitterCard,
-    title: SEO_CONFIG.siteName,
-    description: SEO_CONFIG.defaultDescription,
-    images: [SEO_CONFIG.siteUrl + SEO_CONFIG.images.ogImage],
-    creator: SEO_CONFIG.social.twitter,
-  },
-  robots: ROBOTS,
-  viewport: VIEWPORT,
-  alternates: {
-    canonical: SEO_CONFIG.siteUrl,
-  },
-  verification: {
-    google: "your-google-search-console-verification-code",
-  },
-};
 
 export default function RootLayout({
   children,
@@ -80,6 +42,22 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ModelProvider>
+            {/* Global SEO Meta Tags */}
+            <SEO
+              title={SEO_CONFIG.siteName}
+              description={SEO_CONFIG.defaultDescription}
+              keywords={SEO_CONFIG.keywords}
+              canonical={SEO_CONFIG.siteUrl}
+              ogTitle={SEO_CONFIG.siteName}
+              ogDescription={SEO_CONFIG.defaultDescription}
+              ogUrl={SEO_CONFIG.siteUrl}
+              ogType={SOCIAL_MEDIA.ogType}
+              twitterCard={SOCIAL_MEDIA.twitterCard}
+              twitterTitle={SEO_CONFIG.siteName}
+              twitterDescription={SEO_CONFIG.defaultDescription}
+              noIndex={false}
+            />
+            
             {/* Global Structured Data */}
             <WebsiteStructuredData
               name={SEO_CONFIG.siteName}
