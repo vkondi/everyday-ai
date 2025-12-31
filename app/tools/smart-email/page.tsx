@@ -96,8 +96,8 @@ export default function SmartEmailPage() {
       }
       
       validateJsonResponse(response)
-      
-      const data = await response.json()
+
+      const data = await response.json() as EmailEnhancementResult
       setResults(data)
     } catch (error) {
       console.error('Error refining email:', error)

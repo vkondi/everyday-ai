@@ -75,11 +75,11 @@ export function SEO({
 
     // Update canonical URL
     if (canonical) {
-      let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
+      let canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
       if (canonicalLink) {
         canonicalLink.href = canonical
       } else {
-        canonicalLink = document.createElement('link') as HTMLLinkElement
+        canonicalLink = document.createElement('link')
         canonicalLink.rel = 'canonical'
         canonicalLink.href = canonical
         document.head.appendChild(canonicalLink)
@@ -88,11 +88,11 @@ export function SEO({
 
     // Update robots meta tag
     const robotsContent = noIndex ? 'noindex, nofollow' : 'index, follow'
-    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null
+    let robotsMeta = document.querySelector<HTMLMetaElement>('meta[name="robots"]')
     if (robotsMeta) {
       robotsMeta.content = robotsContent
     } else {
-      robotsMeta = document.createElement('meta') as HTMLMetaElement
+      robotsMeta = document.createElement('meta')
       robotsMeta.name = 'robots'
       robotsMeta.content = robotsContent
       document.head.appendChild(robotsMeta)
@@ -119,11 +119,11 @@ export function SEO({
 
     // Twitter Card tags
     const updateTwitterTag = (name: string, content: string) => {
-      let twitterTag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null
+      let twitterTag = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)
       if (twitterTag) {
         twitterTag.content = content
       } else {
-        twitterTag = document.createElement('meta') as HTMLMetaElement
+        twitterTag = document.createElement('meta')
         twitterTag.name = name
         twitterTag.content = content
         document.head.appendChild(twitterTag)
@@ -137,11 +137,11 @@ export function SEO({
 
     // Structured Data
     if (structuredData) {
-      let script = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement | null
+      let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"]')
       if (script) {
         script.textContent = JSON.stringify(structuredData)
       } else {
-        script = document.createElement('script') as HTMLScriptElement
+        script = document.createElement('script')
         script.type = 'application/ld+json'
         script.textContent = JSON.stringify(structuredData)
         document.head.appendChild(script)
@@ -149,9 +149,9 @@ export function SEO({
     }
 
     // Viewport meta tag for mobile responsiveness
-    let viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement | null
+    let viewport = document.querySelector<HTMLMetaElement>('meta[name="viewport"]')
     if (!viewport) {
-      viewport = document.createElement('meta') as HTMLMetaElement
+      viewport = document.createElement('meta')
       viewport.name = 'viewport'
       viewport.content = 'width=device-width, initial-scale=1'
       document.head.appendChild(viewport)

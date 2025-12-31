@@ -66,11 +66,11 @@ export function WebsiteStructuredData({
       ...(sameAs && { "sameAs": sameAs })
     }
 
-    let script = document.querySelector('script[type="application/ld+json"][data-type="website"]') as HTMLScriptElement | null
+    let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"][data-type="website"]')
     if (script) {
       script.textContent = JSON.stringify(structuredData)
     } else {
-      script = document.createElement('script') as HTMLScriptElement
+      script = document.createElement('script')
       script.type = 'application/ld+json'
       script.setAttribute('data-type', 'website')
       script.textContent = JSON.stringify(structuredData)
@@ -104,11 +104,11 @@ export function OrganizationStructuredData({
       ...(contactPoint && { "contactPoint": contactPoint })
     }
 
-    let script = document.querySelector('script[type="application/ld+json"][data-type="organization"]') as HTMLScriptElement | null
+    let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"][data-type="organization"]')
     if (script) {
       script.textContent = JSON.stringify(structuredData)
     } else {
-      script = document.createElement('script') as HTMLScriptElement
+      script = document.createElement('script')
       script.type = 'application/ld+json'
       script.setAttribute('data-type', 'organization')
       script.textContent = JSON.stringify(structuredData)
@@ -141,11 +141,11 @@ export function ArticleStructuredData({
       ...(dateModified && { "dateModified": dateModified })
     }
 
-    let script = document.querySelector('script[type="application/ld+json"][data-type="article"]') as HTMLScriptElement | null
+    let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"][data-type="article"]')
     if (script) {
       script.textContent = JSON.stringify(structuredData)
     } else {
-      script = document.createElement('script') as HTMLScriptElement
+      script = document.createElement('script')
       script.type = 'application/ld+json'
       script.setAttribute('data-type', 'article')
       script.textContent = JSON.stringify(structuredData)
@@ -174,11 +174,11 @@ export function BreadcrumbStructuredData({ itemListElement }: BreadcrumbStructur
       }))
     }
 
-    let script = document.querySelector('script[type="application/ld+json"][data-type="breadcrumb"]') as HTMLScriptElement | null
+    let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"][data-type="breadcrumb"]')
     if (script) {
       script.textContent = JSON.stringify(structuredData)
     } else {
-      script = document.createElement('script') as HTMLScriptElement
+      script = document.createElement('script')
       script.type = 'application/ld+json'
       script.setAttribute('data-type', 'breadcrumb')
       script.textContent = JSON.stringify(structuredData)
@@ -244,11 +244,11 @@ export function LocalBusinessStructuredData({
       })
     }
 
-    let script = document.querySelector('script[type="application/ld+json"][data-type="localbusiness"]') as HTMLScriptElement | null
+    let script = document.querySelector<HTMLScriptElement>('script[type="application/ld+json"][data-type="localbusiness"]')
     if (script) {
       script.textContent = JSON.stringify(structuredData)
     } else {
-      script = document.createElement('script') as HTMLScriptElement
+      script = document.createElement('script')
       script.type = 'application/ld+json'
       script.setAttribute('data-type', 'localbusiness')
       script.textContent = JSON.stringify(structuredData)

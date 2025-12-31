@@ -114,7 +114,7 @@ export default function NewsDigestPage() {
     try {
       const saved = localStorage.getItem('newsDigestCategories')
       if (saved) {
-        const parsed = JSON.parse(saved)
+        const parsed = JSON.parse(saved) as unknown
         if (Array.isArray(parsed) && parsed.length > 0) {
           setSelectedCategories(parsed)
         }
@@ -157,7 +157,7 @@ export default function NewsDigestPage() {
       }
 
       validateJsonResponse(response)
-      const data: NewsResponse = await response.json()
+      const data = await response.json() as NewsResponse
       setNewsArticles(data.articles)
     } catch (error) {
       console.error('Error fetching news:', error)

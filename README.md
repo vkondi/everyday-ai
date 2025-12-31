@@ -80,7 +80,7 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 - **Offline**: Works without internet connection
 - **Customizable**: Full control over the models
 - **Requires**: Ollama installation and model downloads
-- **Setup**: See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for installation guide
+- **Setup**: See [OLLAMA_SETUP.md](docs/OLLAMA_SETUP.md) for installation guide
 - **Availability**: Only visible and functional in development environment
 - **Security**: Local models are completely disabled in production for security
 

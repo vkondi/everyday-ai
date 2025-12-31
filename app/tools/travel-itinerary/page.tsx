@@ -199,8 +199,8 @@ export default function TravelItineraryPage() {
       }
       
       validateJsonResponse(response)
-      
-      const data = await response.json()
+
+      const data = await response.json() as TravelItineraryResult
       setResults(data)
     } catch (error) {
       console.error('Error generating itinerary:', error)
@@ -507,7 +507,7 @@ export default function TravelItineraryPage() {
                     {Object.entries(results.budget_breakdown).map(([category, cost]) => (
                       <div key={category} className="text-center">
                         <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                          {cost.startsWith('$') ? cost : `$${cost}`}
+                          {typeof cost === 'string' && cost.startsWith('$') ? cost : `$${cost}`}
                         </div>
                         <div className="text-xs text-muted-foreground uppercase tracking-wide capitalize">{category}</div>
                       </div>

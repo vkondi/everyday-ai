@@ -1,7 +1,8 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react"
-import { AIModel } from "@/components/features/model-selector"
+import { createContext, useContext, useState, useEffect } from "react"
+import type { ReactNode } from "react"
+import type { AIModel } from "@/components/features/model-selector"
 
 
 interface ModelContextType {
@@ -51,4 +52,4 @@ export function useModel() {
     throw new Error("useModel must be used within a ModelProvider")
   }
   return context
-} 
+}
