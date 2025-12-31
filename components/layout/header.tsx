@@ -1,8 +1,10 @@
 "use client"
 
-import { ThemeToggle } from "./theme-toggle"
-import { ModelSelector } from "./model-selector"
-import { useModel } from "./model-context"
+import { useModel } from "@/components/context/model-context"
+import { ModelSelector } from "@/components/features/model-selector"
+import { ThemeToggle } from "@/components/features/theme-toggle"
+
+
 
 export function Header() {
   const { selectedModel, setSelectedModel } = useModel()

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BreadcrumbStructuredData } from './structured-data'
+import { BreadcrumbStructuredData } from '../seo/structured-data'
 
 interface BreadcrumbItem {
   label: string
@@ -31,7 +31,7 @@ export function Breadcrumb({ customItems, className = "" }: BreadcrumbProps) {
 
     // Add path segments
     let currentPath = ''
-    pathSegments.forEach((segment, index) => {
+    pathSegments.forEach((segment) => {
       currentPath += `/${segment}`
       
       // Convert URL segment to readable label

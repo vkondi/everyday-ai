@@ -2,13 +2,13 @@
 
 import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { PageLayout } from "@/components/page-layout"
-import { PageHeader } from "@/components/page-header"
-import { FeatureCards } from "@/components/feature-cards"
+import { PageLayout } from "@/components/layout/page-layout"
+import { PageHeader } from "@/components/layout/page-header"
+import { FeatureCards } from "@/components/features/feature-cards"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Plane, Calendar, DollarSign, Loader2, Shield, Trash2 } from "lucide-react"
-import { useModel } from "@/components/model-context"
+import { useModel } from "@/components/context/model-context"
 import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/components/utils/error-utils"
 
 interface TravelActivity {
@@ -122,8 +122,6 @@ export default function TravelItineraryPage() {
     return null
   }
 
-
-
   const featureCards = [
     {
       icon: MapPin,
@@ -159,8 +157,6 @@ export default function TravelItineraryPage() {
         : [...prev, preferenceId]
     )
   }
-
-
 
   const handleGenerateItinerary = async () => {
     // Validate form first
@@ -647,4 +643,4 @@ export default function TravelItineraryPage() {
         </div>
       </PageLayout>
     )
-  } 
+  }

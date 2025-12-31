@@ -1,7 +1,8 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react"
-import { AIModel } from "./model-selector"
+import { AIModel } from "@/components/features/model-selector"
+
 
 interface ModelContextType {
   selectedModel: AIModel

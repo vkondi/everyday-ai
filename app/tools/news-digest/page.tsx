@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
-import { PageLayout } from "@/components/page-layout"
-import { PageHeader } from "@/components/page-header"
-import { FeatureCards } from "@/components/feature-cards"
+import { PageLayout } from "@/components/layout/page-layout"
+import { PageHeader } from "@/components/layout/page-header"
+import { FeatureCards } from "@/components/features/feature-cards"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { 
@@ -33,7 +33,7 @@ import {
   Car,
   Zap
 } from "lucide-react"
-import { useModel } from "@/components/model-context"
+import { useModel } from "@/components/context/model-context"
 import { getUserFriendlyError, handleApiError, validateJsonResponse } from "@/components/utils/error-utils"
 
 interface NewsArticle {
@@ -378,4 +378,4 @@ export default function NewsDigestPage() {
       </div>
     </PageLayout>
   )
-} 
+}

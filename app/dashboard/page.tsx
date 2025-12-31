@@ -1,11 +1,11 @@
-import { DashboardCard } from "@/components/dashboard-card"
-import { Footer } from "@/components/footer"
-import { Header } from "@/components/header"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import { BackgroundPattern } from "@/components/background-pattern"
+import { DashboardCard } from "@/components/features/dashboard-card"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
+import { ScrollToTop } from "@/components/layout/scroll-to-top"
+import { BackgroundPattern } from "@/components/layout/background-pattern"
 import { Mail, MapPin, Newspaper } from "lucide-react"
-import { SEO } from "@/components/seo"
-import { Breadcrumb } from "@/components/breadcrumb"
+import { SEO } from "@/components/seo/seo"
+import { Breadcrumb } from "@/components/navigation/breadcrumb"
 import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from "@/lib/seo-constants"
 
 export default function DashboardPage() {

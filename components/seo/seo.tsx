@@ -17,7 +17,7 @@ interface SEOProps {
   twitterTitle?: string
   twitterDescription?: string
   twitterImage?: string
-  structuredData?: Record<string, any>
+  structuredData?: Record<string, unknown>
   noIndex?: boolean
 }
 

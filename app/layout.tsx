@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModelProvider } from "@/components/model-context";
+import { ThemeProvider } from "@/components/context/theme-provider";
+import { ModelProvider } from "@/components/context/model-context";
 import { Analytics } from '@vercel/analytics/next';
-import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/structured-data";
+import { WebsiteStructuredData, OrganizationStructuredData } from "@/components/seo/structured-data";
 import { SEO_CONFIG, SOCIAL_MEDIA, ROBOTS, VIEWPORT } from "@/lib/seo-constants";
 
 const geistSans = Geist({
