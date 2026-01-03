@@ -56,7 +56,7 @@
     {
       "src": "/(.*)",
       "headers": {
-        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "frame-ancestors 'self' https://vishwajeetkondi.vercel.app;",
         "X-Content-Type-Options": "nosniff",
         "Referrer-Policy": "origin-when-cross-origin",
         "X-XSS-Protection": "1; mode=block"
