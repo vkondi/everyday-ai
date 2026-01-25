@@ -1,33 +1,33 @@
-"use client"
+'use client';
 
-import React, { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface FeatureCard {
-  icon: React.ComponentType<{ className?: string }>
-  badge: string
-  title: string
-  description: string
+  icon: React.ComponentType<{ className?: string }>;
+  badge: string;
+  title: string;
+  description: string;
 }
 
 interface FeatureCardsProps {
-  cards: FeatureCard[]
-  className?: string
+  cards: FeatureCard[];
+  className?: string;
 }
 
-export function FeatureCards({ cards, className = "" }: FeatureCardsProps) {
-  const [currentCardIndex, setCurrentCardIndex] = useState(0)
+export function FeatureCards({ cards, className = '' }: FeatureCardsProps) {
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
   const nextCard = () => {
-    setCurrentCardIndex((prev) => (prev + 1) % cards.length)
-  }
+    setCurrentCardIndex((prev) => (prev + 1) % cards.length);
+  };
 
   const prevCard = () => {
-    setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length)
-  }
+    setCurrentCardIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  };
 
   return (
     <div className={`mb-12 ${className}`}>
@@ -40,16 +40,17 @@ export function FeatureCards({ cards, className = "" }: FeatureCardsProps) {
                 <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
                   <card.icon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </div>
-                <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300"
+                >
                   {card.badge}
                 </Badge>
               </div>
               <CardTitle className="text-lg">{card.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm">
-                {card.description}
-              </CardDescription>
+              <CardDescription className="text-sm">{card.description}</CardDescription>
             </CardContent>
           </Card>
         ))}
@@ -64,11 +65,16 @@ export function FeatureCards({ cards, className = "" }: FeatureCardsProps) {
                 <div className="flex items-center space-x-2">
                   <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-lg flex items-center justify-center">
                     {(() => {
-                    const IconComponent = cards[currentCardIndex].icon;
-                    return <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
-                  })()}
+                      const IconComponent = cards[currentCardIndex].icon;
+                      return (
+                        <IconComponent className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                      );
+                    })()}
                   </div>
-                  <Badge variant="secondary" className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300">
+                  <Badge
+                    variant="secondary"
+                    className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300"
+                  >
                     {cards[currentCardIndex].badge}
                   </Badge>
                 </div>
@@ -81,18 +87,13 @@ export function FeatureCards({ cards, className = "" }: FeatureCardsProps) {
               </CardContent>
             </Card>
           </div>
-          
+
           {/* Carousel Navigation */}
           <div className="flex justify-center items-center mt-4 space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={prevCard}
-              className="h-8 w-8 p-0"
-            >
+            <Button variant="ghost" size="sm" onClick={prevCard} className="h-8 w-8 p-0">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            
+
             <div className="flex space-x-2">
               {cards.map((_, index) => (
                 <button
@@ -106,18 +107,13 @@ export function FeatureCards({ cards, className = "" }: FeatureCardsProps) {
                 />
               ))}
             </div>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={nextCard}
-              className="h-8 w-8 p-0"
-            >
+
+            <Button variant="ghost" size="sm" onClick={nextCard} className="h-8 w-8 p-0">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}

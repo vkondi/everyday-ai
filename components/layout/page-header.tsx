@@ -1,22 +1,22 @@
-import React from "react"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 interface PageHeaderProps {
-  title: string
-  description?: string
-  showBackButton?: boolean
-  backHref?: string
-  className?: string
+  title: string;
+  description?: string;
+  showBackButton?: boolean;
+  backHref?: string;
+  className?: string;
 }
 
-export function PageHeader({ 
-  title, 
-  description, 
-  showBackButton = true, 
-  backHref = "/dashboard",
-  className = ""
+export function PageHeader({
+  title,
+  description,
+  showBackButton = true,
+  backHref = '/dashboard',
+  className = '',
 }: PageHeaderProps) {
   return (
     <div className={`mb-8 ${className}`}>
@@ -31,11 +31,7 @@ export function PageHeader({
       <h1 className="text-3xl font-bold tracking-tight mb-4 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
         {title}
       </h1>
-      {description && (
-        <p className="text-slate-700 dark:text-slate-300 text-lg">
-          {description}
-        </p>
-      )}
+      {description && <p className="text-slate-700 dark:text-slate-300 text-lg">{description}</p>}
     </div>
-  )
-} 
+  );
+}

@@ -4,8 +4,8 @@ This checklist ensures that all basic essentials are covered for maintaining cod
 
 ## 1. Testing
 
-- [ ] Unit testing is enabled
-- [ ] Coverage target set to greater than 90%
+- [x] Unit testing is enabled
+- [x] Coverage target set to greater than 90%
 
 ## 2. Linting
 
@@ -20,23 +20,23 @@ This checklist ensures that all basic essentials are covered for maintaining cod
 
 ## 4. Formatter
 
-- [ ] Formatter is enabled
-- [ ] Format script added to `package.json`
+- [x] Formatter is enabled
+- [x] Format script added to `package.json`
 
 ## 5. Husky
 
-- [ ] Husky is configured
-- [ ] Lint check added to pre-commit hook
-- [ ] Type check added to pre-commit hook
-- [ ] Formatting check added to pre-commit hook
-- [ ] Husky prepare script added to `package.json`
+- [x] Husky is configured
+- [x] Lint check added to pre-commit hook
+- [x] Type check added to pre-commit hook
+- [x] Formatting check added to pre-commit hook
+- [x] Husky prepare script added to `package.json`
 
 ## 6. GitHub Actions
 
-- [ ] CI configured with lint job
-- [ ] CI configured with type check job
-- [ ] CI configured with test job
-- [ ] CI configured with build job
+- [x] CI configured with lint job
+- [x] CI configured with type check job
+- [x] CI configured with test job
+- [x] CI configured with build job
 
 ## 7. SEO Implementation
 

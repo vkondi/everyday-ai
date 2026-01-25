@@ -1,13 +1,13 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface DashboardCardProps {
-  title: string
-  tag: string
-  description: string
-  icon: React.ReactNode
-  href: string
+  title: string;
+  tag: string;
+  description: string;
+  icon: React.ReactNode;
+  href: string;
 }
 
 export function DashboardCard({ title, tag, description, icon, href }: DashboardCardProps) {
@@ -29,5 +29,5 @@ export function DashboardCard({ title, tag, description, icon, href }: Dashboard
         </Button>
       </CardFooter>
     </Card>
-  )
-} 
+  );
+}
