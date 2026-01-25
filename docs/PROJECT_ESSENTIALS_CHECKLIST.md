@@ -9,9 +9,9 @@ This checklist ensures that all basic essentials are covered for maintaining cod
 
 ## 2. Linting
 
-- [ ] Linting is enabled
-- [ ] Lint script added to `package.json`
-- [ ] Recommended linting rules added based on the project tech stack
+- [x] Linting is enabled
+- [x] Lint script added to `package.json`
+- [x] Recommended linting rules added based on the project tech stack
 
 ## 3. Type Safety
 
@@ -40,28 +40,28 @@ This checklist ensures that all basic essentials are covered for maintaining cod
 
 ## 7. SEO Implementation
 
-- [ ] SSR/SSG Setup (if not already implemented)
-- [ ] Meta Tags & Head Management
-- [ ] Semantic HTML & Accessibility
-- [ ] Performance Optimizations
-- [ ] Structured Data (Schema.org)
-- [ ] Sitemap & Robots.txt
-- [ ] URL Structure & Routing
-- [ ] Social Sharing Preview
-- [ ] Analytics & Monitoring Setup
-- [ ] Technical Checklist
+- [x] SSR/SSG Setup (if not already implemented)
+- [x] Meta Tags & Head Management
+- [x] Semantic HTML & Accessibility
+- [x] Performance Optimizations
+- [x] Structured Data (Schema.org)
+- [x] Sitemap & Robots.txt
+- [x] URL Structure & Routing
+- [x] Social Sharing Preview
+- [x] Analytics & Monitoring Setup
+- [x] Technical Checklist
 
 ## 8. Documentation
 
-- [ ] Code of Conduct document added
+- [x] Code of Conduct document added
 - [ ] Contributing document added
 - [ ] Testing guidelines document added
 - [ ] Pull request guidelines document added
 - [ ] README includes CI status badge
-- [ ] README includes Tech Stack information
+- [x] README includes Tech Stack information
 - [ ] README includes other relevant badges
-- [ ] README properly embeds documentation details
-- [ ] SEO guide document added
+- [x] README properly embeds documentation details
+- [x] SEO guide document added
 
 ---
 
