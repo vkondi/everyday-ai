@@ -15,8 +15,8 @@ This checklist ensures that all basic essentials are covered for maintaining cod
 
 ## 3. Type Safety
 
-- [ ] TypeScript is enabled
-- [ ] Type safety check script added to `package.json`
+- [x] TypeScript is enabled
+- [x] Type safety check script added to `package.json`
 
 ## 4. Formatter
 
