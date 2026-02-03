@@ -1,37 +1,40 @@
-import { DashboardCard } from "@/components/features/dashboard-card"
-import { Footer } from "@/components/layout/footer"
-import { Header } from "@/components/layout/header"
-import { ScrollToTop } from "@/components/layout/scroll-to-top"
-import { BackgroundPattern } from "@/components/layout/background-pattern"
-import { Mail, MapPin, Newspaper } from "lucide-react"
-import { SEO } from "@/components/seo/seo"
-import { Breadcrumb } from "@/components/navigation/breadcrumb"
-import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from "@/components/utils/seo-constants"
+import { DashboardCard } from '@/components/features/dashboard-card';
+import { Footer } from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
+import { ScrollToTop } from '@/components/layout/scroll-to-top';
+import { BackgroundPattern } from '@/components/layout/background-pattern';
+import { Mail, MapPin, Newspaper } from 'lucide-react';
+import { SEO } from '@/components/seo/seo';
+import { Breadcrumb } from '@/components/navigation/breadcrumb';
+import { PAGE_SEO, SEO_CONFIG, SOCIAL_MEDIA } from '@/components/utils/seo-constants';
 
 export default function DashboardPage() {
   const tools = [
     {
-      title: "Smart Email",
-      tag: "Productivity",
-      description: "Transform your emails with AI-powered suggestions for tone, clarity, and professionalism. Perfect for business communication and personal correspondence.",
+      title: 'Smart Email',
+      tag: 'Productivity',
+      description:
+        'Transform your emails with AI-powered suggestions for tone, clarity, and professionalism. Perfect for business communication and personal correspondence.',
       icon: <Mail className="h-6 w-6" />,
-      href: "/tools/smart-email"
+      href: '/tools/smart-email',
     },
     {
-      title: "Travel Itinerary Builder",
-      tag: "Travel",
-      description: "Create personalized travel plans with AI recommendations for destinations, activities, and budget optimization. Your perfect trip, crafted intelligently.",
+      title: 'Travel Itinerary Builder',
+      tag: 'Travel',
+      description:
+        'Create personalized travel plans with AI recommendations for destinations, activities, and budget optimization. Your perfect trip, crafted intelligently.',
       icon: <MapPin className="h-6 w-6" />,
-      href: "/tools/travel-itinerary"
+      href: '/tools/travel-itinerary',
     },
     {
-      title: "News Digest",
-      tag: "Media & News",
-      description: "Stay informed with AI-curated news summaries tailored to your interests. Get the most relevant stories without the noise.",
+      title: 'News Digest',
+      tag: 'Media & News',
+      description:
+        'Stay informed with AI-curated news summaries tailored to your interests. Get the most relevant stories without the noise.',
       icon: <Newspaper className="h-6 w-6" />,
-      href: "/tools/news-digest"
-    }
-  ]
+      href: '/tools/news-digest',
+    },
+  ];
 
   return (
     <>
@@ -52,7 +55,7 @@ export default function DashboardPage() {
       <div className="min-h-screen flex flex-col relative">
         <BackgroundPattern />
         <Header />
-        
+
         <main className="flex-1 container mx-auto px-4 py-8 md:px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb */}
@@ -65,9 +68,11 @@ export default function DashboardPage() {
               </h1>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Discover the power of artificial intelligence in your daily life. Our suite of intelligent tools is designed to enhance your productivity, 
-                  streamline your workflow, and make complex tasks simple. From crafting perfect emails to planning dream vacations, 
-                  let AI be your personal assistant for a smarter, more efficient tomorrow.
+                  Discover the power of artificial intelligence in your daily life. Our suite of
+                  intelligent tools is designed to enhance your productivity, streamline your
+                  workflow, and make complex tasks simple. From crafting perfect emails to planning
+                  dream vacations, let AI be your personal assistant for a smarter, more efficient
+                  tomorrow.
                 </p>
               </div>
             </section>
@@ -78,7 +83,10 @@ export default function DashboardPage() {
                 <h2 className="text-2xl font-semibold tracking-tight mb-2 bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
                   Intelligent Solutions Hub
                 </h2>
-                <p className="text-slate-700 dark:text-slate-300">Explore our curated collection of AI-powered tools designed to transform your daily tasks</p>
+                <p className="text-slate-700 dark:text-slate-300">
+                  Explore our curated collection of AI-powered tools designed to transform your
+                  daily tasks
+                </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {tools.map((tool) => (
@@ -100,5 +108,5 @@ export default function DashboardPage() {
         <ScrollToTop />
       </div>
     </>
-  )
+  );
 }

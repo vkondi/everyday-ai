@@ -1,13 +1,11 @@
-"use client"
+'use client';
 
-import { useModel } from "@/components/context/model-context"
-import { ModelSelector } from "@/components/features/model-selector"
-import { ThemeToggle } from "@/components/features/theme-toggle"
-
-
+import { useModel } from '@/components/context/model-context';
+import { ModelSelector } from '@/components/features/model-selector';
+import { ThemeToggle } from '@/components/features/theme-toggle';
 
 export function Header() {
-  const { selectedModel, setSelectedModel } = useModel()
+  const { selectedModel, setSelectedModel } = useModel();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -23,5 +21,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
-} 
+  );
+}

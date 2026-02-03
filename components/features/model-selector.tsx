@@ -1,61 +1,61 @@
-"use client"
+'use client';
 
-import React from "react"
-import { Button } from "@/components/ui/button"
-import { ChevronDown, Cpu, Globe } from "lucide-react"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ChevronDown, Cpu, Globe } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 
-export type AIModel = "deepseek-api" | "local-deepseek-r1" | "local-llama3" | "gemini-flash";
+export type AIModel = 'deepseek-api' | 'local-deepseek-r1' | 'local-llama3' | 'gemini-flash';
 
 interface ModelSelectorProps {
-  selectedModel: AIModel
-  onModelChange: (model: AIModel) => void
+  selectedModel: AIModel;
+  onModelChange: (model: AIModel) => void;
 }
 
 export function ModelSelector({ selectedModel, onModelChange }: ModelSelectorProps) {
-  const isDevelopment = process.env.NODE_ENV === 'development'
-  
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
   const models = [
     {
-      id: "deepseek-api" as AIModel,
-      name: "DeepSeek API",
-      description: "Cloud-based AI model",
-      icon: Globe,
-      alwaysVisible: true,
-    },
-     {
-      id: "gemini-flash" as AIModel,
-      name: "Gemini 2.5 Flash",
-      description: "Cloud-based AI model",
+      id: 'deepseek-api' as AIModel,
+      name: 'DeepSeek API',
+      description: 'Cloud-based AI model',
       icon: Globe,
       alwaysVisible: true,
     },
     {
-      id: "local-deepseek-r1" as AIModel,
-      name: "Local DeepSeek R1",
-      description: "Local Ollama model",
+      id: 'gemini-flash' as AIModel,
+      name: 'Gemini 2.5 Flash',
+      description: 'Cloud-based AI model',
+      icon: Globe,
+      alwaysVisible: true,
+    },
+    {
+      id: 'local-deepseek-r1' as AIModel,
+      name: 'Local DeepSeek R1',
+      description: 'Local Ollama model',
       icon: Cpu,
       alwaysVisible: false,
     },
     {
-      id: "local-llama3" as AIModel,
-      name: "Local Llama 3",
-      description: "Local Ollama model",
+      id: 'local-llama3' as AIModel,
+      name: 'Local Llama 3',
+      description: 'Local Ollama model',
       icon: Cpu,
       alwaysVisible: false,
     },
-  ]
+  ];
 
   // Filter models based on environment
-  const visibleModels = models.filter(model => model.alwaysVisible || isDevelopment)
-  
-  const selectedModelData = visibleModels.find(model => model.id === selectedModel) || models[0]
-  const IconComponent = selectedModelData?.icon || Globe
+  const visibleModels = models.filter((model) => model.alwaysVisible || isDevelopment);
+
+  const selectedModelData = visibleModels.find((model) => model.id === selectedModel) || models[0];
+  const IconComponent = selectedModelData?.icon || Globe;
 
   return (
     <DropdownMenu>
@@ -68,7 +68,7 @@ export function ModelSelector({ selectedModel, onModelChange }: ModelSelectorPro
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         {visibleModels.map((model) => {
-          const ModelIcon = model.icon
+          const ModelIcon = model.icon;
           return (
             <DropdownMenuItem
               key={model.id}
@@ -81,9 +81,9 @@ export function ModelSelector({ selectedModel, onModelChange }: ModelSelectorPro
                 <span className="text-xs text-muted-foreground">{model.description}</span>
               </div>
             </DropdownMenuItem>
-          )
+          );
         })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-} 
+  );
+}

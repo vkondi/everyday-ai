@@ -15,16 +15,19 @@ This guide will help you set up Ollama with local AI models for offline processi
 Visit [ollama.ai](https://ollama.ai) and download the installer for your operating system.
 
 **Windows:**
+
 - Download the Windows installer
 - Run the installer and follow the prompts
 - Ollama will be available at `http://localhost:11434`
 
 **macOS:**
+
 - Download the macOS installer
 - Drag Ollama to Applications folder
 - Start Ollama from Applications
 
 **Linux:**
+
 ```bash
 curl -fsSL https://ollama.ai/install.sh | sh
 ```
@@ -34,15 +37,19 @@ curl -fsSL https://ollama.ai/install.sh | sh
 Open a terminal/command prompt and run the following commands:
 
 #### DeepSeek R1 Model
+
 ```bash
 ollama pull deepseek-r1
 ```
+
 This will download the DeepSeek R1 model (approximately 8GB).
 
 #### Llama 3 Model
+
 ```bash
 ollama pull llama3
 ```
+
 This will download the Llama 3 model (approximately 4GB).
 
 ### 3. Verify Installation
@@ -86,10 +93,12 @@ ollama run llama3 "Hello, how are you?"
 ## Troubleshooting
 
 ### Ollama not starting
+
 - Check if Ollama is running: `ollama serve`
 - On Windows, check if the service is running in Task Manager
 
 ### Models not found
+
 - Pull the models again:
   ```bash
   ollama pull deepseek-r1
@@ -98,11 +107,13 @@ ollama run llama3 "Hello, how are you?"
 - Check available models: `ollama list`
 
 ### Connection errors
+
 - Ensure Ollama is running on `http://localhost:11434`
 - Check firewall settings
 - Restart Ollama if needed
 
 ### Performance issues
+
 - Close other applications to free up RAM
 - Consider using only one model at a time
 - Ensure you have adequate cooling for your system
@@ -111,6 +122,7 @@ ollama run llama3 "Hello, how are you?"
 ## Model Information
 
 ### DeepSeek R1
+
 - **Model**: DeepSeek R1
 - **Size**: ~8GB
 - **RAM Usage**: ~4-6GB during inference
@@ -118,6 +130,7 @@ ollama run llama3 "Hello, how are you?"
 - **Best for**: Complex reasoning, detailed analysis
 
 ### Llama 3
+
 - **Model**: Llama 3
 - **Size**: ~4GB
 - **RAM Usage**: ~2-4GB during inference
@@ -134,6 +147,7 @@ ollama run llama3 "Hello, how are you?"
 ## Support
 
 If you encounter issues:
+
 1. Check the [Ollama documentation](https://ollama.ai/docs)
 2. Visit the [Ollama GitHub repository](https://github.com/ollama/ollama)
-3. Check the model cards for [DeepSeek R1](https://ollama.ai/library/deepseek-r1) and [Llama 3](https://ollama.ai/library/llama3) 
+3. Check the model cards for [DeepSeek R1](https://ollama.ai/library/deepseek-r1) and [Llama 3](https://ollama.ai/library/llama3)
