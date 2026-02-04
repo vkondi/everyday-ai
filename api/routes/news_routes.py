@@ -73,7 +73,10 @@ def fetch_news_by_category():
         logger.info(f"[{request_id}] Fetching news for categories: {categories} in region: {region}")
         
         # Route to appropriate service based on model selection
-        if selected_model in ['local-deepseek-r1', 'local-llama3']:
+        # Check if model is a local (Ollama) model
+        available_local_models = ollama_service.get_available_model_ids() if is_development and ollama_service else []
+        
+        if selected_model in available_local_models:
             if not is_development:
                 return error_response("Local models are not available in production environment. Please use DeepSeek API.", 400)
             if ollama_service is None:

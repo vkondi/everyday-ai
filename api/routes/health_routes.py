@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from services.ollama_service import OllamaService
-from config import logger, DEEPSEEK_API_KEY
+from config import logger, DEEPSEEK_API_KEY, GEMINI_API_KEY
 from utils.env_utils import should_initialize_local_models, get_environment_name
 from utils.response_helpers import success_response
 
@@ -35,40 +35,55 @@ def check_models():
         # Check DeepSeek API availability (from config)
         deepseek_available = DEEPSEEK_API_KEY is not None
         
-        # Check Ollama service availability (only in development)
+        # Check Gemini API availability (from config)
+        gemini_available = GEMINI_API_KEY is not None
+        
+        # Build models dictionary
+        models_dict = {
+            "deepseek-api": {
+                "available": deepseek_available,
+                "type": "cloud",
+                "description": "DeepSeek API (cloud-based)"
+            },
+            "gemini-flash": {
+                "available": gemini_available,
+                "type": "cloud",
+                "description": "Google Gemini 2.5 Flash (cloud-based)"
+            }
+        }
+        
+        # Check Ollama service availability and dynamically discover models
         ollama_available = False
-        deepseek_r1_available = False
-        llama3_available = False
+        discovered_models = {}
         
         if is_development and ollama_service is not None:
             ollama_available = ollama_service.is_available()
+            
             if ollama_available:
-                deepseek_r1_available = ollama_service.is_model_available("local-deepseek-r1")
-                llama3_available = ollama_service.is_model_available("local-llama3")
+                # Get dynamically discovered models
+                available_model_ids = ollama_service.get_available_model_ids()
+                
+                for model_id in available_model_ids:
+                    is_model_available = ollama_service.is_model_available(model_id)
+                    # Extract the base model name from model_id (e.g., "local-llama3" -> "llama3")
+                    base_name = model_id.replace("local-", "").upper()
+                    
+                    discovered_models[model_id] = {
+                        "available": is_model_available,
+                        "type": "local",
+                        "description": f"Local {base_name} (Ollama)",
+                        "requires": "Development environment + Ollama + model loaded"
+                    }
+        
+        # Merge discovered models with the base models dictionary
+        models_dict.update(discovered_models)
         
         return jsonify({
-            "models": {
-                "deepseek-api": {
-                    "available": deepseek_available,
-                    "type": "cloud",
-                    "description": "DeepSeek API (cloud-based)"
-                },
-                "local-deepseek-r1": {
-                    "available": deepseek_r1_available,
-                    "type": "local",
-                    "description": "Local DeepSeek R1 (Ollama)",
-                    "requires": "Development environment + Ollama + deepseek-r1 model"
-                },
-                "local-llama3": {
-                    "available": llama3_available,
-                    "type": "local", 
-                    "description": "Local Llama 3 (Ollama)",
-                    "requires": "Development environment + Ollama + llama3 model"
-                }
-            },
+            "models": models_dict,
             "ollama_service": {
                 "available": ollama_available,
                 "status": "running" if ollama_available else "not available",
+                "discovered_models_count": len(discovered_models),
                 "environment": get_environment_name()
             },
             "environment": get_environment_name()

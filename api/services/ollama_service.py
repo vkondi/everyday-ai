@@ -16,6 +16,7 @@ class OllamaService:
     """
     Service class for interacting with local Ollama models
     Only available in development environment
+    Dynamically discovers available models from Ollama
     """
     
     def __init__(self, base_url: str = "http://localhost:11434"):
@@ -29,11 +30,87 @@ class OllamaService:
             return
             
         self.base_url = base_url
-        self.supported_models = {
-            "local-deepseek-r1": "deepseek-r1",
-            "local-llama3": "llama3"
+        self.supported_models = {}
+        
+        # Dynamically discover available models
+        self._discover_available_models()
+        
+        if self.supported_models:
+            logger.info(f"OllamaService: Initialized with {len(self.supported_models)} discovered model(s): {list(self.supported_models.keys())}")
+        else:
+            logger.warning("OllamaService: No models discovered. Ensure Ollama is running and models are loaded.")
+    
+    def _discover_available_models(self) -> None:
+        """
+        Dynamically discover available models from Ollama
+        Queries the /api/tags endpoint and creates dynamic model IDs
+        """
+        try:
+            response = requests.get(f"{self.base_url}/api/tags", timeout=5)
+            if response.status_code == 200:
+                data = response.json()
+                models = data.get("models", [])
+                
+                if not models:
+                    logger.warning("OllamaService: No models found in Ollama")
+                    return
+                
+                # Dynamically create model IDs and map to Ollama model names
+                for model in models:
+                    model_name = model.get("name", "")
+                    if model_name:
+                        # Extract the base model name (without version tags)
+                        # e.g., "llama3:7b" -> "llama3"
+                        base_name = model_name.split(":")[0]
+                        
+                        # Create a friendly dynamic ID
+                        # e.g., "llama3:7b" -> "local-llama3"
+                        model_id = f"local-{base_name}"
+                        
+                        # Store mapping (use full model name including tags for accuracy)
+                        self.supported_models[model_id] = model_name
+                        
+                        logger.info(f"OllamaService: Discovered model - {model_id} -> {model_name}")
+            else:
+                logger.warning(f"OllamaService: Failed to fetch models from Ollama (status {response.status_code})")
+        except requests.exceptions.ConnectionError:
+            logger.warning("OllamaService: Cannot connect to Ollama service. Ensure Ollama is running.")
+        except requests.exceptions.Timeout:
+            logger.warning("OllamaService: Timeout connecting to Ollama service.")
+        except Exception as e:
+            logger.warning(f"OllamaService: Error discovering available models: {str(e)}")
+    
+    def _get_model_config(self, model_id: str) -> Dict[str, Any]:
+        """
+        Get model configuration from MODEL_CONFIGS or create default configuration
+        
+        Args:
+            model_id: The model ID to get configuration for
+            
+        Returns:
+            Dictionary containing model configuration with temperature, timeout, etc.
+        """
+        # Check if configuration exists in MODEL_CONFIGS
+        if model_id in MODEL_CONFIGS:
+            return MODEL_CONFIGS[model_id]
+        
+        # Return default configuration for dynamically discovered models
+        logger.info(f"Using default configuration for model: {model_id}")
+        return {
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "max_tokens": 2000,
+            "timeout": 60
         }
-        logger.info("OllamaService: Initialized for development environment")
+    
+    def get_available_model_ids(self) -> List[str]:
+        """
+        Get list of all available local model IDs
+        
+        Returns:
+            List of model IDs (e.g., ['local-llama3', 'local-deepseek-r1'])
+        """
+        return list(self.supported_models.keys())
     
     def is_available(self) -> bool:
         """
@@ -83,8 +160,8 @@ class OllamaService:
             if not ollama_model_name:
                 return None, f"Unsupported model: {model_id}"
             
-            # Get model configuration
-            config = MODEL_CONFIGS.get(model_id, {})
+            # Get model configuration (will use defaults if not in MODEL_CONFIGS)
+            config = self._get_model_config(model_id)
             
             payload = {
                 "model": ollama_model_name,
