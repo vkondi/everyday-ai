@@ -190,16 +190,6 @@ When selecting a model, consider:
 
 Visit [ollama.ai/models](https://ollama.ai/models) to explore models and their specifications.
 
-## Model Selection Tips
-
-- **For First-Time Users**: Start with a smaller model (3-7B) like Llama 2 or Mistral
-- **For Better Quality**: Use larger models (7B+) if your hardware supports it
-- **For Privacy**: All local models keep data entirely on your machine (offline)
-- **For Speed**: Smaller models respond faster
-- **For Quality**: Larger models provide better reasoning and analysis
-- **For Experimentation**: Try different models to find what works best for your needs
-
-The beauty of Ollama is flexibility - install whatever models suit your needs and the app will automatically detect and use them.
 
 ## API Integration Details
 

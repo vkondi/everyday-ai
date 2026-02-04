@@ -59,7 +59,7 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 
 ## 🛠️ How It Works
 
-1. **Choose Your AI Model**: Select between DeepSeek API (cloud) or local models (DeepSeek R1, Llama 3) in development
+1. **Choose Your AI Model**: Select between cloud models or locally installed Ollama models
 2. **Choose Your Tool**: Select from our suite of AI-powered assistants
 3. **Input Your Content**: Provide the information you want to enhance or analyze
 4. **Get AI Insights**: Receive intelligent suggestions and improvements
@@ -99,17 +99,12 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
    Create a `.env.local` file in the root directory:
 
    ```bash
-   # DeepSeek API Key (required for cloud AI features)
+   # Cloud AI Model API Keys
    DEEPSEEK_API_KEY=your_deepseek_api_key_here
-
-   # Gemini API Key (optional, for additional AI model)
    GEMINI_API_KEY=your_gemini_api_key_here
 
-   # News API Key (optional, for news features)
-   NEWS_API_KEY=your_news_api_key_here
-
-   # Environment (development/production)
-   NODE_ENV=development
+   # Optional: Analytics
+   CLOUDFLARE_WEB_ANALYTICS_TOKEN=your_cloudflare_analytics_token
    ```
 
 5. **Start the development servers**
@@ -135,32 +130,31 @@ Clean, modern design that makes using AI tools feel natural and intuitive. No st
 For privacy-focused, offline AI processing (development only):
 
 1. **Install Ollama** - See [OLLAMA_SETUP.md](docs/OLLAMA_SETUP.md) for detailed instructions
-2. **Download models**:
-   ```bash
-   ollama pull deepseek-r1
-   ollama pull llama3
-   ```
+2. **Pull any Ollama model** - Visit [ollama.ai/models](https://ollama.ai/models) to choose models
 3. **Models will be automatically available in development mode**
 
 ## 🤖 AI Model Options
 
-- **DeepSeek API (Default)**: Cloud-based, instant responses, requires API key, available in all environments
-- **Google Gemini Flash**: Fast AI model for content generation, cost-effective processing, requires API key
-- **Local Models (Dev Only)**: DeepSeek R1 & Llama 3 for offline processing, privacy-focused, requires [Ollama setup](docs/OLLAMA_SETUP.md)
+- **Cloud Models**: API-based models like DeepSeek, Google Gemini, etc. - instant responses, requires API keys
+- **Local Models**: Any Ollama model installed locally - offline processing, privacy-focused, development only
+
+**Learn more**: See [OLLAMA_SETUP.md](docs/OLLAMA_SETUP.md) for local model setup and configuration
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 15.5.9 with React 19.0.0, TypeScript, Tailwind CSS v4
-- **Backend**: Python Flask 3.1.1, DeepSeek AI, Google Gemini Flash, Ollama integration
+- **Frontend**: Next.js 16+ with React 19.0.0, TypeScript, Tailwind CSS v4
+- **Backend**: Python Flask 3.1.1, support for multiple AI providers via APIs, Ollama integration
 - **UI/UX**: Radix UI components, Lucide React icons, responsive design
-- **Deployment**: Vercel hosting with SEO optimization ([SEO Guide](docs/SEO_GUIDE.md))
+- **Deployment**: Vercel hosting with SEO optimization
+
+**Note**: Tech stack versions may differ. Check `package.json` and `requirements.txt` for exact versions.
 
 ## 🎨 User Experience Highlights
 
 ### Responsive Design
 
-- **Desktop**: Full-featured experience with all tools visible at once
-- **Tablet**: Optimized layout that adapts to medium screens
+- **Desktop**: Full-featured experience with all tools visible
+- **Tablet**: Optimized layout for medium screens
 - **Mobile**: Touch-friendly interface with intuitive navigation
 
 ### Dark Mode Support
@@ -175,6 +169,12 @@ For privacy-focused, offline AI processing (development only):
 - Screen reader compatibility
 - High contrast mode support
 - Focus indicators for better usability
+
+### Model Selection
+
+- Dynamic model discovery - available models automatically detected
+- Persistent model selection across sessions
+- Seamless switching between cloud and local models
 
 ## 📧 Contact
 
