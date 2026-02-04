@@ -190,7 +190,6 @@ When selecting a model, consider:
 
 Visit [ollama.ai/models](https://ollama.ai/models) to explore models and their specifications.
 
-
 ## API Integration Details
 
 The application's backend discovers models by:
