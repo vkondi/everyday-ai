@@ -65,7 +65,10 @@ def enhance_email():
         logger.info(f"[{request_id}] Processing email content: {len(email_content)} characters")
         
         # Route to appropriate service based on model selection
-        if selected_model in ['local-deepseek-r1', 'local-llama3']:
+        # Check if model is a local (Ollama) model
+        available_local_models = ollama_service.get_available_model_ids() if is_development and ollama_service else []
+        
+        if selected_model in available_local_models:
             if not is_development:
                 return error_response("Local models are not available in production environment. Please use DeepSeek API.", 400)
             if ollama_service is None:

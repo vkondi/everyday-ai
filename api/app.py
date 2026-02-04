@@ -20,7 +20,7 @@ def create_app():
     CORS(app, expose_headers=['Content-Disposition'])
     
     # Register blueprints
-    app.register_blueprint(health_bp, url_prefix='/api')
+    app.register_blueprint(health_bp, url_prefix='/api/health')
     app.register_blueprint(email_bp, url_prefix='/api/email')
     app.register_blueprint(news_bp, url_prefix='/api/news')
     app.register_blueprint(travel_bp, url_prefix='/api/travel')
