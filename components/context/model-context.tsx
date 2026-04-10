@@ -112,7 +112,7 @@ export function ModelProvider({ children }: { children: ReactNode }) {
     };
 
     fetchModels();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - fetch only once
 
   const handleSetSelectedModel = useCallback((model: AIModel) => {
