@@ -13,3 +13,12 @@ updates:
       dependencies:
         patterns:
           - "*"  # Combines all npm updates into one PR
+
+  - package-ecosystem: "pip" 
+    directory: "/" 
+    schedule:
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
