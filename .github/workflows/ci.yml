@@ -18,7 +18,7 @@ jobs:
 
       - uses: ./.github/actions/setup-node
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Run ESLint
         run: yarn lint
@@ -32,7 +32,7 @@ jobs:
 
       - uses: ./.github/actions/setup-node
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Run TypeScript type check
         run: yarn type-check
@@ -68,7 +68,7 @@ jobs:
 
       - uses: ./.github/actions/setup-node
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Run build
         run: yarn build
