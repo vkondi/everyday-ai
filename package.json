@@ -15,7 +15,8 @@
     "test:coverage": "vitest --coverage",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "qa": "yarn lint && yarn type-check && yarn format:check"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.16",
