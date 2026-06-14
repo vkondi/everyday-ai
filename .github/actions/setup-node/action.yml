@@ -14,8 +14,8 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
 
     - name: Install dependencies
       shell: bash
-      run: npm ci
+      run: yarn install --frozen-lockfile

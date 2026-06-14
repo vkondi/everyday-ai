@@ -43,7 +43,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.6",
     "@vitest/ui": "^4.0.18",
-    "eslint": "^10.3",
+    "eslint": "^9",
     "eslint-config-next": "^16.2.6",
     "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-react": "^7.37.5",
