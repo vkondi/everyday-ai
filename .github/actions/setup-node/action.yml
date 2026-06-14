@@ -5,7 +5,7 @@ inputs:
   node-version:
     description: Node.js version to use
     required: false
-    default: '20'
+    default: '22'
 
 runs:
   using: composite
@@ -14,8 +14,8 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
 
     - name: Install dependencies
       shell: bash
-      run: npm ci
+      run: yarn install --frozen-lockfile
