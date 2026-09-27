@@ -50,15 +50,9 @@ export const SEO_CONFIG = {
 };
 
 export const PAGE_SEO = {
-  home: {
-    /* page-specific settings */
-  },
-  dashboard: {
-    /* page-specific settings */
-  },
-  smartEmail: {
-    /* page-specific settings */
-  },
+  home: {/* page-specific settings */},
+  dashboard: {/* page-specific settings */},
+  smartEmail: {/* page-specific settings */},
   // ... all pages
 };
 ```
